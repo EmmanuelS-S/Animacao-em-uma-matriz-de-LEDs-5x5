@@ -81,6 +81,14 @@ void rodar_animacao(uint32_t animacao[][5][5], int num_frames) {
     clear_leds(); // Apaga os LEDs após a animação
 }
 
+// Exemplos de Animações
+void iniciar_animacoes(uint32_t animacoes[7][5][5][5]) {
+    // Animação 1 (Exemplo: LEDs piscando alternadamente)
+    uint32_t red = 0xFF0000, black = 0x000000;
+    animacoes[0][0][0][0] = red;
+    animacoes[0][0][0][1] = black;
+}
+
 void config_gpio() {
     // Configurando linhas do teclado como saídas
     for (int i = 0; i < LINHAS; i++) {
