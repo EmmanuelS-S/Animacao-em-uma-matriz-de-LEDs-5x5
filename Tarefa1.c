@@ -28,8 +28,37 @@ const char keymap[linhas][colunas] = {
     {'*', '0', '#', 'D'}
 };
 
+//uint32_t led_colors[NUM_LEDS]; // Array para armazenar cores dos LEDs
+
+// Funções auxiliares
+/*void clear_leds() {
+    for (int i = 0; i < NUM_LEDS; i++) {
+        led_colors[i] = 0x000000; // Apaga todos os LEDs
+    }
+    put_pixel(led_colors);
+}
+
+void set_all_leds(uint32_t color) {
+    for (int i = 0; i < NUM_LEDS; i++) {
+        led_colors[i] = color;
+    }
+    put_pixel(led_colors);
+}*/
+
 void config_gpio() {
-    // Incializando e configurando GPIOs como saidas
+    // Configurando linhas do teclado como saídas
+    for (int i = 0; i < LINHAS; i++) {
+        gpio_init(pinosLinhas[i]);
+        gpio_set_dir(pinosLinhas[i], GPIO_OUT);
+    }
+
+    // Configurando colunas do teclado como entradas com pull-down
+    for (int i = 0; i < COLUNAS; i++) {
+        gpio_init(pinosColunas[i]);
+        gpio_set_dir(pinosColunas[i], GPIO_IN);
+        gpio_pull_down(pinosColunas[i]);
+    }
+    // Incializando e configurando GPIOs dos LEDS e buzzer como saidas
     gpio_init(led_pin_green); gpio_set_dir(led_pin_green, GPIO_OUT);
     gpio_init(led_pin_blue); gpio_set_dir(led_pin_blue, GPIO_OUT);
     gpio_init(led_pin_red); gpio_set_dir(led_pin_red, GPIO_OUT);
