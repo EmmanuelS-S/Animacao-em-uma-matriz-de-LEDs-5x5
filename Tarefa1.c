@@ -54,14 +54,15 @@ char ler_teclado() {
 
 uint32_t led_colors[NUM_LEDS]; // Array para armazenar cores dos LEDs
 
-
-/*void clear_leds() {
+// Funções auxiliares para WS2812
+void clear_leds() {
     for (int i = 0; i < NUM_LEDS; i++) {
         led_colors[i] = 0x000000; // Apaga todos os LEDs
     }
     put_pixel(led_colors);
 }
 
+/*
 void set_all_leds(uint32_t color) {
     for (int i = 0; i < NUM_LEDS; i++) {
         led_colors[i] = color;
