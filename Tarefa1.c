@@ -72,6 +72,14 @@ void exibir_frame(uint32_t frame[5][5]) {
     }
     put_pixel(led_cores);
 }
+//Executar uma animação composta por vários frames.
+void rodar_animacao(uint32_t animacao[][5][5], int num_frames) {
+    for (int frame = 0; frame < num_frames; frame++) {
+        show_frame(animacao[frame]);
+        sleep_ms(1000 / ANIMACAO_FPS); // Controla o FPS
+    }
+    clear_leds(); // Apaga os LEDs após a animação
+}
 
 void config_gpio() {
     // Configurando linhas do teclado como saídas
