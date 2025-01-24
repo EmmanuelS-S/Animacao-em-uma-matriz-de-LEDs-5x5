@@ -52,23 +52,26 @@ char ler_teclado() {
     return 0; 
 }
 
-uint32_t led_colors[NUM_LEDS]; // Array para armazenar cores dos LEDs
+uint32_t led_cores[NUM_LEDS]; // Array para armazenar cores dos LEDs
 
 // Funções auxiliares para WS2812
 void clear_leds() {
     for (int i = 0; i < NUM_LEDS; i++) {
-        led_colors[i] = 0x000000; // Apaga todos os LEDs
+        led_cores[i] = 0x000000; // Apaga todos os LEDs
     }
-    put_pixel(led_colors);
+    put_pixel(led_cores);
 }
 
-/*
-void set_all_leds(uint32_t color) {
-    for (int i = 0; i < NUM_LEDS; i++) {
-        led_colors[i] = color;
+//funcao para exibir um único frame na matriz de LEDs 5x5
+void exibir_frame(uint32_t frame[5][5]) {
+    int index = 0;
+    for (int linha = 0; linha < 5; linha++) {
+        for (int col = 0; col < 5; col++) {
+            led_cores[index++] = frame[linha][col];
+        }
     }
-    put_pixel(led_colors);
-}*/
+    put_pixel(led_cores);
+}
 
 void config_gpio() {
     // Configurando linhas do teclado como saídas
