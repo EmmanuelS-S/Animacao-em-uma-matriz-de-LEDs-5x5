@@ -1,16 +1,16 @@
 #include <pico/stdlib.h>
 #include <stdio.h>
+#include "hardware/pwm.h"
+#include "hardware/gpio.h"
+#include "ws2812.pio.h"  // Biblioteca para WS2812
 
 // Definindo linhas e colunas do teclado matricial
-// Definindo linhas e colunas do teclado matricial
-#define linha1 8  
-#define linha2 7  
-#define linha3 6  
-#define linha4 5  
-#define coluna1 4 
-#define coluna2 3  
-#define coluna3 2  
-#define coluna4 28  
+#define linhas 4
+#define colunas 4
+
+// Mapas de pinos para o teclado matricial
+const uint pinosLinhas[linhas] = {8, 7, 6, 5};
+const uint pinosColunas[colunas] = {4, 3, 2, 28};
 
 // Definições dos LEDs RGB
 #define led_pin_green 11
