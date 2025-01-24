@@ -20,6 +20,14 @@ const uint pinosColunas[colunas] = {4, 3, 2, 28};
 // Definição do buzzer
 #define buzzer 21
 
+// Mapas de teclas do teclado matricial
+const char keymap[linhas][colunas] = {
+    {'1', '2', '3', 'A'},
+    {'4', '5', '6', 'B'},
+    {'7', '8', '9', 'C'},
+    {'*', '0', '#', 'D'}
+};
+
 void config_gpio() {
     // Incializando e configurando GPIOs como saidas
     gpio_init(led_pin_green); gpio_set_dir(led_pin_green, GPIO_OUT);
