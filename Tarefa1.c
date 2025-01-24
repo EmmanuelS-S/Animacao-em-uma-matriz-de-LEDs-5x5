@@ -94,7 +94,41 @@ void control_gpio(uint8_t red, uint8_t blue, uint8_t green, uint8_t buz) {
 int main() {
     stdio_init_all();
     config_gpio();
+    while (true) {
+        char teclado = ler_teclado(); // Leitura do teclado matricial 4x4
 
-     return 0;
-    
+        if (teclado != 0) { // Se alguma tecla for pressionada
+            printf("Tecla pressionada: %c\n", key);
+
+            switch (teclado) {
+                 case 'A': // Liga todos os LEDs
+                    control_leds(1, 1, 1);
+                    break;
+                case 'C': // Liga o LED vermelho ->  todos os LEDs deverão ser ligados na cor vermelha, no nível de intensidade de 80% da luminosidade máxima. 
+                    control_leds(1, 0, 0);
+                    break;
+                case 'B': // Liga o LED azul -> todos os LEDs deverão ser ligados na cor azul, no nível de intensidade de 100%
+                    control_leds(0, 1, 0);
+                    break;
+                case 'D': // Liga o LED verde -> todos os LEDs deverão ser ligados na cor verde, no nível de intensidade de 50% da luminosidade máxima. 
+                    control_leds(0, 0, 1);
+                    break;
+                case '#': // Liga todos os LEDs -> todos os LEDs deverão ser ligados na cor branca, no nível de intensidade de 20% da luminosidade máxima.
+                    control_leds(1, 1, 1);
+                    break;    
+                case '0': // Aciona o buzzer->gerar sinal sonoro para uma das animações usando o componente buzzer. 
+                    control_buzzer(1);
+                    break;
+                case '*': // Desliga o buzzer -> o Raspberry Pi Pico W deve sair do modo de execução e habilitar o modo de gravação via software (reboot).
+                    control_buzzer(0);
+                    break;
+                default: // Desliga os LEDs
+                    control_leds(0, 0, 0);
+                    break;
+            }
+        }
+
+        sleep_ms(100); // delay para evitar leituras repetidas
+    }  
+    return 0;   
 }
