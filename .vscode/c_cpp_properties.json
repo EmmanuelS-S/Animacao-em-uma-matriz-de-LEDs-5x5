@@ -1,0 +1,21 @@
+{
+  "configurations": [
+    {
+      "name": "windows-gcc-x86",
+      "includePath": [
+        "${workspaceFolder}/**"
+      ],
+      "forcedInclude": [
+        "${userHome}/.pico-sdk/sdk/2.1.0/src/common/pico_base_headers/include/pico.h",
+        "${workspaceFolder}/build/generated/pico_base/pico/config_autogen.h"
+      ],
+      "defines": [],
+      "compilerPath": "C:/MinGW/bin/gcc.exe",
+      "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+      "cStandard": "${default}",
+      "cppStandard": "${default}",
+      "intelliSenseMode": "windows-gcc-x86"
+    }
+  ],
+  "version": 4
+}
