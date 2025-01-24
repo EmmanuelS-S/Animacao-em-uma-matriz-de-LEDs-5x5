@@ -103,7 +103,8 @@ int main() {
             switch (teclado) {
                 case '0':
                 /*->As teclas de 0 a 6 do teclado matricial, caso acionadas, o sistema deve executar algum tipo de animação na matriz de LEDs 5x5. Os tipos de desenho, cores (RGB) e 
-                luminosidades associados a estas imagens/animações ficam a critério dos membros da equipe de desenvolvimento*/
+                luminosidades associados a estas imagens/animações ficam a critério dos membros da equipe de desenvolvimento, Cada animação deve possuir, no mínimo, 5 frames 
+                (imagens diferentes) e o FPS (quantidade de quadros por segundo) também deve ser definido pela equipe de desenvolvimento.*/
                     break;
                 case 'A': // Liga todos os LEDs
                     control_leds(1, 1, 1);
