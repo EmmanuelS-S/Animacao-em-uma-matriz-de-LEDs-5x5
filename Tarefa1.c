@@ -21,16 +21,35 @@ const uint pinosColunas[colunas] = {4, 3, 2, 28};
 #define buzzer 21
 
 // Mapas de teclas do teclado matricial
-const char keymap[linhas][colunas] = {
+const char esquema_Teclado[linhas][colunas] = {
     {'1', '2', '3', 'A'},
     {'4', '5', '6', 'B'},
     {'7', '8', '9', 'C'},
     {'*', '0', '#', 'D'}
 };
 
+// Funções auxiliares:
+// Função para ler o teclado matricial 4x4
+char ler_teclado() {
+    for (int l = 0; l < LINHAS; l++) {
+        gpio_put(pinosLinhas[l], true); // ativação da linha
+        sleep_us(50); 
+
+        for (int c = 0; c < COLUNAS; c++) {
+            if (gpio_get(pinosColunas[c])) { // Verificação de sinal na coluna
+                gpio_put(pinosLinhas[l], false); // Desativa a linha
+                return esquema_Teclado[l][c]; // Retorna a tecla pressionada
+            }
+        }
+        gpio_put(pinosLinhas[l], false); // Desativa a linha
+    }
+
+    return 0; 
+}
+
 //uint32_t led_colors[NUM_LEDS]; // Array para armazenar cores dos LEDs
 
-// Funções auxiliares
+
 /*void clear_leds() {
     for (int i = 0; i < NUM_LEDS; i++) {
         led_colors[i] = 0x000000; // Apaga todos os LEDs
