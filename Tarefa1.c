@@ -12,6 +12,11 @@
 const uint pinosLinhas[linhas] = {8, 7, 6, 5};
 const uint pinosColunas[colunas] = {4, 3, 2, 28};
 
+// Definições da Matriz de LEDs 5x5
+#define NUM_LEDS 25
+#define LED_PIN 2 // Pino de saída para WS2812
+#define ANIMATION_FPS 10 // Quadros por segundo
+
 // Definições dos LEDs RGB
 #define led_pin_green 11
 #define led_pin_blue 12
@@ -47,7 +52,7 @@ char ler_teclado() {
     return 0; 
 }
 
-//uint32_t led_colors[NUM_LEDS]; // Array para armazenar cores dos LEDs
+uint32_t led_colors[NUM_LEDS]; // Array para armazenar cores dos LEDs
 
 
 /*void clear_leds() {
