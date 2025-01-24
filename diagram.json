@@ -1,1 +1,48 @@
-
+{
+    "version": 1,
+    "author": "Subgrupo 7",
+    "editor": "wokwi",
+    "parts": [
+      { "type": "board-pi-pico-w", "id": "pico", "top": 92.75, "left": 253.15, "attrs": {} },
+      { "type": "wokwi-membrane-keypad", "id": "keypad1", "top": -309.2, "left": -340, "attrs": {} },
+      {
+        "type": "wokwi-buzzer",
+        "id": "bz1",
+        "top": 40.8,
+        "left": 414.6,
+        "attrs": { "volume": "0.1" }
+      },
+      { "type": "wokwi-led", "id": "led1", "top": 294, "left": 138.2, "attrs": { "color": "red" } },
+      { "type": "wokwi-led", "id": "led2", "top": 246, "left": 138.2, "attrs": { "color": "blue" } },
+      {
+        "type": "wokwi-led",
+        "id": "led3",
+        "top": 198,
+        "left": 138.2,
+        "attrs": { "color": "green" }
+      },
+      {
+        "type": "wokwi-resistor",
+        "id": "r1",
+        "top": 330.35,
+        "left": 76.8,
+        "attrs": { "value": "1000" }
+      },
+      {
+        "type": "wokwi-resistor",
+        "id": "r2",
+        "top": 282.35,
+        "left": 76.8,
+        "attrs": { "value": "1000" }
+      },
+      {
+        "type": "wokwi-resistor",
+        "id": "r3",
+        "top": 234.35,
+        "left": 76.8,
+        "attrs": { "value": "1000" }
+      }
+    ],
+    
+    "dependencies": {}
+  }
