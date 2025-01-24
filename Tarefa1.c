@@ -81,7 +81,7 @@ void rodar_animacao(uint32_t animacao[][5][5], int num_frames) {
     clear_leds(); // Apaga os LEDs após a animação
 }
 
-// Exemplos de Animações
+// Funcao para Inicializar as animações definindo os frames de cada uma, e um exemplo de Animaçao
 void iniciar_animacoes(uint32_t animacoes[7][5][5][5]) {
     // Animação 1 (Exemplo: LEDs piscando alternadamente)
     uint32_t red = 0xFF0000, black = 0x000000;
