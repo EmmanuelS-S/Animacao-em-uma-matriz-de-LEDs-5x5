@@ -101,7 +101,11 @@ int main() {
             printf("Tecla pressionada: %c\n", key);
 
             switch (teclado) {
-                 case 'A': // Liga todos os LEDs
+                case '0':
+                /*->As teclas de 0 a 6 do teclado matricial, caso acionadas, o sistema deve executar algum tipo de animação na matriz de LEDs 5x5. Os tipos de desenho, cores (RGB) e 
+                luminosidades associados a estas imagens/animações ficam a critério dos membros da equipe de desenvolvimento*/
+                    break;
+                case 'A': // Liga todos os LEDs
                     control_leds(1, 1, 1);
                     break;
                 case 'C': // Liga o LED vermelho ->  todos os LEDs deverão ser ligados na cor vermelha, no nível de intensidade de 80% da luminosidade máxima. 
