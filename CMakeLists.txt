@@ -60,3 +60,5 @@ target_link_libraries(animacao-em-uma-matriz-de-leds-5x5
 
 pico_add_extra_outputs(animacao-em-uma-matriz-de-leds-5x5)
 
+pico_enable_stdio_usb(Tarefa1 1)
+pico_enable_stdio_uart(Tarefa1 0)
