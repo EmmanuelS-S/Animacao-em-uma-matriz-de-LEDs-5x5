@@ -35,7 +35,10 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(animacao-em-uma-matriz-de-leds-5x5 Tarefa1.c )
+add_executable(animacao-em-uma-matriz-de-leds-5x5 
+    Tarefa1.c
+    ws2812.pio.h 
+    )
 
 pico_set_program_name(animacao-em-uma-matriz-de-leds-5x5 "animacao-em-uma-matriz-de-leds-5x5")
 pico_set_program_version(animacao-em-uma-matriz-de-leds-5x5 "0.1")
@@ -46,7 +49,9 @@ pico_enable_stdio_usb(animacao-em-uma-matriz-de-leds-5x5 1)
 
 # Add the standard library to the build
 target_link_libraries(animacao-em-uma-matriz-de-leds-5x5
-        pico_stdlib)
+        pico_stdlib
+        hardware_pwm
+        hardware_pio)
 
 # Add the standard include files to the build
 target_include_directories(animacao-em-uma-matriz-de-leds-5x5 PRIVATE
@@ -60,3 +65,5 @@ target_link_libraries(animacao-em-uma-matriz-de-leds-5x5
 
 pico_add_extra_outputs(animacao-em-uma-matriz-de-leds-5x5)
 
+pico_enable_stdio_usb(Tarefa1 1)
+pico_enable_stdio_uart(Tarefa1 0)

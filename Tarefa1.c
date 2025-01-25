@@ -1,126 +1,126 @@
-#include <pico/stdlib.h>
+#include "pico/stdlib.h"
 #include <stdio.h>
+#include "ws2812.pio.h"  // Biblioteca para WS2812
 #include "hardware/pwm.h"
 #include "hardware/gpio.h"
-#include "ws2812.pio.h"  // Biblioteca para WS2812
 
-// Definindo linhas e colunas do teclado matricial
-#define linhas 4
-#define colunas 4
+// Definindo Linhas e Colunas do teclado matricial
+#define ROWS 4
+#define COL 4
 
 // Mapas de pinos para o teclado matricial
-const uint pinosLinhas[linhas] = {8, 7, 6, 5};
-const uint pinosColunas[colunas] = {4, 3, 2, 28};
+const uint ROW_PIN[ROWS] = {8, 7, 6, 5};
+const uint COL_PIN[COL] = {4, 3, 2, 28};
 
 // Definições da Matriz de LEDs 5x5
 #define NUM_LEDS 25
-#define LED_PIN 2 // Pino de saída para WS2812
+#define LED_PIN 22 // Pino de saída para WS2812
 #define ANIMATION_FPS 10 // Quadros por segundo
 
 // Definições dos LEDs RGB
-#define led_pin_green 11
-#define led_pin_blue 12
-#define led_pin_red 13
+#define LED_GREEN 11
+#define LED_BLUE 12
+#define LED_RED 13
 
 // Definição do buzzer
-#define buzzer 21
+#define BUZZER 21
 
 // Mapas de teclas do teclado matricial
-const char esquema_Teclado[linhas][colunas] = {
+const char keys[ROWS][COL] = {
     {'1', '2', '3', 'A'},
     {'4', '5', '6', 'B'},
     {'7', '8', '9', 'C'},
     {'*', '0', '#', 'D'}
 };
 
-// Funções auxiliares:
 // Função para ler o teclado matricial 4x4
-char ler_teclado() {
-    for (int l = 0; l < LINHAS; l++) {
-        gpio_put(pinosLinhas[l], true); // ativação da linha
+char read_keypad() {
+    for (int r = 0; r < ROWS; r++) {
+        gpio_put(ROW_PIN[r], true); // Ativação da linha
         sleep_us(50); 
 
-        for (int c = 0; c < COLUNAS; c++) {
-            if (gpio_get(pinosColunas[c])) { // Verificação de sinal na coluna
-                gpio_put(pinosLinhas[l], false); // Desativa a linha
-                return esquema_Teclado[l][c]; // Retorna a tecla pressionada
+        for (int c = 0; c < COL; c++) {
+            if (gpio_get(COL_PIN[c])) { // Verificação de sinal na coluna
+                gpio_put(ROW_PIN[r], false); // Desativa a linha
+                return keys[r][c]; // Retorna a tecla pressionada
             }
         }
-        gpio_put(pinosLinhas[l], false); // Desativa a linha
+        gpio_put(ROW_PIN[r], false); // Desativa a linha
     }
 
     return 0; 
 }
 
-uint32_t led_cores[NUM_LEDS]; // Array para armazenar cores dos LEDs
+uint32_t led_colors[NUM_LEDS]; // Array para armazenar cores dos LEDs
 
 // Funções auxiliares para WS2812
-void clear_leds() {
+void clean_leds() {
     for (int i = 0; i < NUM_LEDS; i++) {
-        led_cores[i] = 0x000000; // Apaga todos os LEDs
+        led_colors[i] = 0x000000; // Apaga todos os LEDs
     }
-    put_pixel(led_cores);
+    put_pixel(led_colors);
 }
 
-//funcao para exibir um único frame na matriz de LEDs 5x5
-void exibir_frame(uint32_t frame[5][5]) {
+//Função para exibir um único frame na matriz de LEDs 5x5
+void show_frame(uint32_t frame[5][5]) {
     int index = 0;
-    for (int linha = 0; linha < 5; linha++) {
+    for (int row = 0; row < 5; row++) {
         for (int col = 0; col < 5; col++) {
-            led_cores[index++] = frame[linha][col];
+            led_colors[index++] = frame[row][col];
         }
     }
-    put_pixel(led_cores);
+    put_pixel(led_colors);
 }
 //Executar uma animação composta por vários frames.
-void rodar_animacao(uint32_t animacao[][5][5], int num_frames) {
+void run_animation(uint32_t animation[][5][5], int num_frames) {
     for (int frame = 0; frame < num_frames; frame++) {
-        show_frame(animacao[frame]);
-        sleep_ms(1000 / ANIMACAO_FPS); // Controla o FPS
+        show_frame(animation[frame]);
+        sleep_ms(1000 / ANIMATION_FPS); // Controla o FPS
     }
-    clear_leds(); // Apaga os LEDs após a animação
+    clean_leds(); // Apaga os LEDs após a animação
 }
 
 // Funcao para Inicializar as animações definindo os frames de cada uma, e um exemplo de Animaçao
-void iniciar_animacoes(uint32_t animacoes[7][5][5][5]) {
+void init_animation(uint32_t animation[7][5][5][5]) {
     // Animação 1 (Exemplo: LEDs piscando alternadamente)
     uint32_t red = 0xFF0000, black = 0x000000;
-    animacoes[0][0][0][0] = red;
-    animacoes[0][0][0][1] = black;
+    animation[0][0][0][0] = red;
+    animation[0][0][0][1] = black;
 }
 
 void config_gpio() {
-    // Configurando linhas do teclado como saídas
-    for (int i = 0; i < LINHAS; i++) {
-        gpio_init(pinosLinhas[i]);
-        gpio_set_dir(pinosLinhas[i], GPIO_OUT);
+    // Configurando as linhas do teclado como saídas
+    for (int i = 0; i < ROWS; i++) {
+        gpio_init(ROW_PIN[i]);
+        gpio_set_dir(ROW_PIN[i], GPIO_OUT);
     }
 
-    // Configurando colunas do teclado como entradas com pull-down
-    for (int i = 0; i < COLUNAS; i++) {
-        gpio_init(pinosColunas[i]);
-        gpio_set_dir(pinosColunas[i], GPIO_IN);
-        gpio_pull_down(pinosColunas[i]);
+    // Configurando as colunas do teclado como entradas com pull-down
+    for (int i = 0; i < COL; i++) {
+        gpio_init(COL_PIN[i]);
+        gpio_set_dir(COL_PIN[i], GPIO_IN);
+        gpio_pull_down(COL_PIN[i]);
     }
-    // Incializando e configurando GPIOs dos LEDS e buzzer como saidas
-    gpio_init(led_pin_green); gpio_set_dir(led_pin_green, GPIO_OUT);
-    gpio_init(led_pin_blue); gpio_set_dir(led_pin_blue, GPIO_OUT);
-    gpio_init(led_pin_red); gpio_set_dir(led_pin_red, GPIO_OUT);
-    gpio_init(buzzer); gpio_set_dir(buzzer, GPIO_OUT);
+    // Incializando e configurando GPIOs dos LEDS e BUZZER como saidas
+    gpio_init(LED_GREEN); gpio_set_dir(LED_GREEN, GPIO_OUT);
+    gpio_init(LED_BLUE); gpio_set_dir(LED_BLUE, GPIO_OUT);
+    gpio_init(LED_RED); gpio_set_dir(LED_RED, GPIO_OUT);
+    gpio_init(BUZZER); gpio_set_dir(BUZZER, GPIO_OUT);
 }
 // Função para acionar os pinos
-void control_gpio(uint8_t red, uint8_t blue, uint8_t green, uint8_t buz) {
-    gpio_put(led_pin_red, red);
-    gpio_put(led_pin_blue, blue);
-    gpio_put(led_pin_green, green);
-    gpio_put(buzzer, buz);
+void control_gpio(uint8_t red, uint8_t blue, uint8_t green, uint8_t buzzer) {
+    gpio_put(LED_RED, red);
+    gpio_put(LED_BLUE, blue);
+    gpio_put(LED_GREEN, green);
+    gpio_put(BUZZER, buzzer);
 }
 
 int main() {
     stdio_init_all();
     config_gpio();
+
     while (true) {
-        char teclado = ler_teclado(); // Leitura do teclado matricial 4x4
+        char teclado = read_keypad(); // Leitura do teclado matricial 4x4
 
         if (teclado != 0) { // Se alguma tecla for pressionada
             printf("Tecla pressionada: %c\n", key);
@@ -157,7 +157,6 @@ int main() {
                     break;
             }
         }
-
         sleep_ms(100); // delay para evitar leituras repetidas
     }  
     return 0;   
