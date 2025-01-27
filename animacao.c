@@ -74,13 +74,13 @@ void show_frame(uint32_t frame[5][5]) {
         }
     }
 }
-//Executar uma animação composta por vários frames.
-void run_animation(uint32_t animation[][5][5], int num_frames) {
-    for (int frame = 0; frame < num_frames; frame++) {
-        show_frame(animation[frame]);
-        sleep_ms(1000 / ANIMATION_FPS); // Controla o FPS
+// Função para exibir a animação composta por vários frames
+void run_animation(uint32_t frames[5][5][5], int num_frames) {
+    for (int frame_idx = 0; frame_idx < num_frames; frame_idx++) {
+        clean_leds();  // Limpar os LEDs antes de exibir o próximo quadro
+        show_frame(frames[frame_idx]);  // Exibir o quadro atual
+        delay(500);  // Atraso para a animação (500 ms por exemplo)
     }
-    clean_leds(); // Apaga os LEDs após a animação
 }
 
 // Funcao para Inicializar as animações definindo os frames de cada uma, e um exemplo de Animaçao
