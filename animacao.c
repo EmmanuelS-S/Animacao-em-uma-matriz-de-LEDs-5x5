@@ -65,15 +65,14 @@ void clean_leds() {
     }
 }
 
-//Função para exibir um único frame na matriz de LEDs 5x5
+//Função para exibir um quadro de LEDs/ um frame na matriz de LEDs 5x5
 void show_frame(uint32_t frame[5][5]) {
-    int index = 0;
-    for (int row = 0; row < 5; row++) {
-        for (int col = 0; col < 5; col++) {
-            led_colors[index++] = frame[row][col];
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            int led_index = i * 5 + j; // Convertendo as coordenadas 2D em um índice 1D
+            set_led(led_index, frame[i][j]); // Definindo a cor do LED
         }
     }
-    put_pixel(led_colors);
 }
 //Executar uma animação composta por vários frames.
 void run_animation(uint32_t animation[][5][5], int num_frames) {
