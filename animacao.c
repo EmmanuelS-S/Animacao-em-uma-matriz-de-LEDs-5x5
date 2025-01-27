@@ -265,9 +265,11 @@ int main() {
                 luminosidades associados a estas imagens/animações ficam a critério dos membros da equipe de desenvolvimento, Cada animação deve possuir, no mínimo, 5 frames 
                 (imagens diferentes) e o FPS (quantidade de quadros por segundo) também deve ser definido pela equipe de desenvolvimento.*/
                 case '0': 
+                    animation_deck_suits(); // Chama a animação dos naipes
                     control_gpios(0, 0, 0, 1); // Especificação opcional: gerar sinal sonoro para uma das animações usando o componente buzzer.  
                     break;
                 case '1':
+                    animation_snake(); // Chama a animação da cobrinha
                     break;
                 case '2':
                     break;
