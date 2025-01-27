@@ -13,7 +13,7 @@ const uint ROW_PIN[ROWS] = {8, 7, 6, 5};
 const uint COL_PIN[COL] = {4, 3, 2, 28};
 
 // Definições da Matriz de LEDs 5x5
-#define NUM_LEDS 24 
+#define NUM_LEDS 25
 //define o array NUM_LEDS como sendo de 25 posicoes (0 a 24)
 #define LED_PIN 22 
 // Pino de saída para WS2812
@@ -58,11 +58,11 @@ uint32_t led_colors[NUM_LEDS]; /* Array para armazenar cores dos LEDs, cada posi
 cores representadas por 24 bits (vermelho (8), verde(8) e azul(8)), e os 8 bits restantes são geralmente usados para controle de brilho ou deixados como zero.*/
 
 // Funções auxiliares para WS2812
+// Função para limpar os LEDs
 void clean_leds() {
     for (int i = 0; i < NUM_LEDS; i++) {
-        led_colors[i] = 0x000000; // percorre o array e Apaga todos os LEDs
+        set_led(i, 0); // Limpando todos os LEDs (definindo a cor como 0)
     }
-    put_pixel(led_colors);
 }
 
 //Função para exibir um único frame na matriz de LEDs 5x5
