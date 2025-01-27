@@ -2,7 +2,7 @@
 #include "pico/stdlib.h"
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
-#include "blink.pio.h" // Biblioteca para manipular o aqrquivo blink.pio
+#include "blink.pio.h" // Biblioteca para manipular o arquivo blink.pio
 
 // Definindo Linhas e Colunas do teclado matricial
 #define ROWS 4
@@ -13,9 +13,12 @@ const uint ROW_PIN[ROWS] = {8, 7, 6, 5};
 const uint COL_PIN[COL] = {4, 3, 2, 28};
 
 // Definições da Matriz de LEDs 5x5
-#define NUM_LEDS 25
-#define LED_PIN 22 // Pino de saída para WS2812
-#define ANIMATION_FPS 10 // Quadros por segundo
+#define NUM_LEDS 24 
+//define o array NUM_LEDS como sendo de 25 posicoes (0 a 24)
+#define LED_PIN 22 
+// Pino de saída para WS2812
+#define ANIMATION_FPS 10 
+// Quadros por segundo
 
 // Definições dos LEDs RGB
 #define LED_GREEN 11
@@ -57,7 +60,7 @@ cores representadas por 24 bits (vermelho (8), verde(8) e azul(8)), e os 8 bits 
 // Funções auxiliares para WS2812
 void clean_leds() {
     for (int i = 0; i < NUM_LEDS; i++) {
-        led_colors[i] = 0x000000; // Apaga todos os LEDs
+        led_colors[i] = 0x000000; // percorre o array e Apaga todos os LEDs
     }
     put_pixel(led_colors);
 }
