@@ -84,11 +84,19 @@ void run_animation(uint32_t frames[5][5][5], int num_frames) {
 }
 
 // Funcao para Inicializar as animações definindo os frames de cada uma, e um exemplo de Animaçao
-void init_animation(uint32_t animation[7][5][5][5]) {
+/*void init_animation(uint32_t animation[7][5][5][5]) {
     // Animação 1 (Exemplo: LEDs piscando alternadamente)
     uint32_t red = 0xFF0000, black = 0x000000;
     animation[0][0][0][0] = red;
     animation[0][0][0][1] = black;
+}*/
+//Animacao 0, com 5 frames, sequencia de naipes de baralho, ouros, copas, espadas e paus e o joker
+void animation_deck_suits() {
+
+    };
+
+    // Executando a animação dos naipes
+    run_animation(frames, 5); // A animação tem 5 frames
 }
 
 void config_gpio() {
