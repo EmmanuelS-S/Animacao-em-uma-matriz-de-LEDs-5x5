@@ -1,8 +1,8 @@
-#include "pico/stdlib.h"
 #include <stdio.h>
-#include "blink.pio.h"  // Biblioteca para WS2812
-#include "hardware/pwm.h"
-#include "hardware/gpio.h"
+#include "pico/stdlib.h"
+#include "hardware/pio.h"
+#include "hardware/clocks.h"
+#include "blink.pio.h" // Biblioteca para manipular o aqrquivo blink.pio
 
 // Definindo Linhas e Colunas do teclado matricial
 #define ROWS 4
