@@ -120,16 +120,17 @@ int main() {
     config_gpio();
 
     while (true) {
-        char teclado = read_keypad(); // Leitura do teclado matricial 4x4
+        char key = read_keypad(); // Leitura do teclado matricial 4x4
 
-        if (teclado != 0) { // Se alguma tecla for pressionada
+        if (key != 0) { // Se alguma tecla for pressionada
             printf("Tecla pressionada: %c\n", key);
 
-            switch (teclado) {
-                case '0':
+            switch (key) {
                 /*->As teclas de 0 a 6 do teclado matricial, caso acionadas, o sistema deve executar algum tipo de animação na matriz de LEDs 5x5. Os tipos de desenho, cores (RGB) e 
                 luminosidades associados a estas imagens/animações ficam a critério dos membros da equipe de desenvolvimento, Cada animação deve possuir, no mínimo, 5 frames 
                 (imagens diferentes) e o FPS (quantidade de quadros por segundo) também deve ser definido pela equipe de desenvolvimento.*/
+                case '0': // Aciona o buzzer->gerar sinal sonoro para uma das animações usando o componente buzzer. 
+                    control_buzzer(1);
                     break;
                 case 'A': // Liga todos os LEDs
                     control_leds(1, 1, 1);
@@ -145,9 +146,6 @@ int main() {
                     break;
                 case '#': // Liga todos os LEDs -> todos os LEDs deverão ser ligados na cor branca, no nível de intensidade de 20% da luminosidade máxima.
                     control_leds(1, 1, 1);
-                    break;    
-                case '0': // Aciona o buzzer->gerar sinal sonoro para uma das animações usando o componente buzzer. 
-                    control_buzzer(1);
                     break;
                 case '*': // Desliga o buzzer -> o Raspberry Pi Pico W deve sair do modo de execução e habilitar o modo de gravação via software (reboot).
                     control_buzzer(0);
