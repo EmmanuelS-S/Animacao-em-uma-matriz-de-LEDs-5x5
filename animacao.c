@@ -92,7 +92,61 @@ void run_animation(uint32_t frames[5][5][5], int num_frames) {
 }*/
 //Animacao 0, com 5 frames, sequencia de naipes de baralho, ouros, copas, espadas e paus e o joker
 void animation_deck_suits() {
+    // Definindo as cores para os naipes
+    //uint32_t ouros_color = 0xFFFF00;    // Ouros (Amarelo)
+    uint32_t ouros_color = 0xFF0000;    // Ouros (vermelho)
+    uint32_t copas_color = 0xFF0000;   // Copas (Vermelho)
+    uint32_t espadas_color = 0x000000; // Espadas (Preto)
+    uint32_t paus_color = 0x000000;    // Paus (Preto)
+    uint32_t joker_color = 0xFFFFFF;   // Joker (Branco)
 
+    // Definindo os frames da animação (5 frames)
+    /*Posicoes na matriz: Ouros:(0,2), (1,1), (1,2), (1,3), (2,0), (2,1) (2,2), (2,3), (2,4), (3,1), (3,2), (3,3), (4,2), 
+    copas: (1,1), (1,3), (2,0), (2,1), (2,2), (2,3), (2,4), (3,1), (3,2), (3,3), (4,2), 
+    espadas: (0,2), (1,0), (1,1), (1,2), (1,3), (1,4), (2,0), (2,1), (2,2), (2,3), (2,4), (3,2), (4,1), (4,2), (4,3), 
+    paus: (0,1), (0,2), (0,3), (1,0), (1,1), (1,2), (1,3), (1,4), (2,0), (2,1), (2,2), (2,3), (2,4), (3,2), (4,1), (4,2), (4,3), 
+    joker: (0,2), (0,3), (0,4), (1,3), (2,3), (3,0), (3,1), (3,3), (4,0), (4,1), (4,2), (4,3)*/
+    uint32_t frames[5][5][5] = {
+        // Frame 1 (Ouros)
+        {
+            {0, 0, ouros_color, 0, 0},
+            {0, ouros_color, ouros_color, ouros_color, 0},
+            {ouros_color, ouros_color, ouros_color, ouros_color, ouros_color},
+            {0, ouros_color, ouros_color, ouros_color, 0},
+            {0, 0, ouros_color, 0, 0}
+        },
+        // Frame 2 (Copas)
+        {
+            {0, 0, copas_color, 0, 0},
+            {0, copas_color, copas_color, copas_color, 0},
+            {copas_color, copas_color, copas_color, copas_color, copas_color},
+            {0, copas_color, copas_color, copas_color, 0},
+            {0, 0, copas_color, 0, 0}
+        },
+        // Frame 3 (Espadas)
+        {
+            {0, 0, espadas_color, 0, 0},
+            {espadas_color, espadas_color, espadas_color, espadas_color, espadas_color},
+            {espadas_color, espadas_color, espadas_color, espadas_color, espadas_color},
+            {0, espadas_color, espadas_color, espadas_color, 0},
+            {0, 0, espadas_color, 0, 0}
+        },
+        // Frame 4 (Paus)
+        {
+            {0, paus_color, paus_color, paus_color, 0},
+            {paus_color, paus_color, paus_color, paus_color, paus_color},
+            {paus_color, paus_color, paus_color, paus_color, paus_color},
+            {0, paus_color, paus_color, paus_color, 0},
+            {0, 0, paus_color, 0, 0}
+        },
+        // Frame 5 (Joker)
+        {
+            {0, 0, joker_color, joker_color, joker_color},
+            {0, joker_color, joker_color, joker_color, 0},
+            {joker_color, joker_color, joker_color, joker_color, joker_color},
+            {joker_color, joker_color, joker_color, joker_color, 0},
+            {0, 0, joker_color, joker_color, joker_color}
+        }
     };
 
     // Executando a animação dos naipes
