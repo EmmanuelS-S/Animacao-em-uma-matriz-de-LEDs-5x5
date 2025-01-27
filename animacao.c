@@ -51,7 +51,8 @@ char read_keypad() {
     return 0; 
 }
 
-uint32_t led_colors[NUM_LEDS]; // Array para armazenar cores dos LEDs
+uint32_t led_colors[NUM_LEDS]; /* Array para armazenar cores dos LEDs, cada posição corresponde a um LED da matriz de LEDs 5x5 (totalizando 25) sendo cada posicao um número de 32 bits, 
+cores representadas por 24 bits (vermelho (8), verde(8) e azul(8)), e os 8 bits restantes são geralmente usados para controle de brilho ou deixados como zero.*/
 
 // Funções auxiliares para WS2812
 void clean_leds() {
