@@ -108,7 +108,7 @@ void config_gpio() {
     gpio_init(BUZZER); gpio_set_dir(BUZZER, GPIO_OUT);
 }
 // Função para acionar os pinos
-void control_gpio(uint8_t red, uint8_t blue, uint8_t green, uint8_t buzzer) {
+void control_gpios(uint8_t red, uint8_t blue, uint8_t green, uint8_t buzzer) {
     gpio_put(LED_RED, red);
     gpio_put(LED_BLUE, blue);
     gpio_put(LED_GREEN, green);
@@ -130,7 +130,7 @@ int main() {
                 luminosidades associados a estas imagens/animações ficam a critério dos membros da equipe de desenvolvimento, Cada animação deve possuir, no mínimo, 5 frames 
                 (imagens diferentes) e o FPS (quantidade de quadros por segundo) também deve ser definido pela equipe de desenvolvimento.*/
                 case '0': 
-                    control_buzzer(1); // Especificação opcional: gerar sinal sonoro para uma das animações usando o componente buzzer.  
+                    control_gpios(0, 0, 0, 1); // Especificação opcional: gerar sinal sonoro para uma das animações usando o componente buzzer.  
                     break;
                 case '1':
                     break;
@@ -147,25 +147,24 @@ int main() {
                 case '7':
                     break;
                 case 'A': // Liga todos os LEDs
-                    control_leds(1, 1, 1);
+                    control_gpios(1, 1, 1, 0);
                     break;
                 case 'C': // Liga o LED vermelho ->  todos os LEDs deverão ser ligados na cor vermelha, no nível de intensidade de 80% da luminosidade máxima. 
-                    control_leds(1, 0, 0);
+                    control_gpios(1, 0, 0, 0);
                     break;
                 case 'B': // Liga o LED azul -> todos os LEDs deverão ser ligados na cor azul, no nível de intensidade de 100%
-                    control_leds(0, 1, 0);
+                    control_gpios(0, 1, 0, 0);
                     break;
                 case 'D': // Liga o LED verde -> todos os LEDs deverão ser ligados na cor verde, no nível de intensidade de 50% da luminosidade máxima. 
-                    control_leds(0, 0, 1);
+                    control_gpios(0, 0, 1, 0);
                     break;
                 case '#': // Liga todos os LEDs -> todos os LEDs deverão ser ligados na cor branca, no nível de intensidade de 20% da luminosidade máxima.
-                    control_leds(1, 1, 1);
+                    control_gpios(1, 1, 1, 0);
                     break;
-                case '*': // Desliga o buzzer -> o Raspberry Pi Pico W deve sair do modo de execução e habilitar o modo de gravação via software (reboot).
-                    control_buzzer(0);
+                case '*': // o Raspberry Pi Pico W deve sair do modo de execução e habilitar o modo de gravação via software (reboot).
                     break;
                 default: // Desliga os LEDs
-                    control_leds(0, 0, 0);
+                    control_gpios(0, 0, 0, 0);
                     break;
             }
         }
