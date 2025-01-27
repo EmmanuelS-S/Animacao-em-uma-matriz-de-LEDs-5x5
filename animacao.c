@@ -152,7 +152,77 @@ void animation_deck_suits() {
     // Executando a animação dos naipes
     run_animation(frames, 5); // A animação tem 5 frames
 }
+//Animacao 1, jogo da cobrinha com 7 frames
+void animation_snake() {
+    // Definindo a cor preta para a cobrinha
+    uint32_t snake_color = 0x000000; // Preto
 
+    // Definindo os frames da animação (7 frames)
+    /*Frame 1: (0,0), (0,2), (2,3), (4,2), frame 2: (0,1), (0,2), (2,3), (4,2), 
+    frame 3: (0,2), (1,2), (2,3), (4,2), frame 4: (1,2), (2,2), (2,3), (4,2), 
+    frame 5: (2,2), (2,3), (3,3), (4,2), frame 6: (2,3), (3,3),(4,3), (4,2), frame 7: (3,3),(4,3),(4,2),(4,1)*/
+    uint32_t snake_frames[7][5][5] = {
+        // Frame 1
+        {
+            {snake_color, 0, snake_color, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, snake_color, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, snake_color}
+        },
+        // Frame 2
+        {
+            {0, snake_color, snake_color, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, snake_color, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, snake_color}
+        },
+        // Frame 3
+        {
+            {0, 0, snake_color, 0, 0},
+            {0, snake_color, 0, 0, 0},
+            {0, 0, snake_color, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, snake_color}
+        },
+        // Frame 4
+        {
+            {0, 0, 0, 0, 0},
+            {0, snake_color, snake_color, 0, 0},
+            {0, 0, snake_color, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, snake_color}
+        },
+        // Frame 5
+        {
+            {0, 0, 0, 0, 0},
+            {0, 0, snake_color, 0, 0},
+            {0, snake_color, snake_color, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, snake_color}
+        },
+        // Frame 6
+        {
+            {0, 0, 0, 0, 0},
+            {0, 0, snake_color, 0, 0},
+            {0, snake_color, snake_color, 0, 0},
+            {0, 0, 0, snake_color, 0},
+            {0, 0, 0, 0, 0}
+        },
+        // Frame 7
+        {
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, snake_color, 0},
+            {0, snake_color, snake_color, 0, 0},
+            {0, 0, 0, snake_color, 0},
+            {0, 0, 0, 0, 0}
+        }
+    };
+
+    // Executando a animação do jogo da cobrinha
+    run_animation(snake_frames, 7); // A animação tem 7 frames
+}
 void config_gpio() {
     // Configurando as linhas do teclado como saídas
     for (int i = 0; i < ROWS; i++) {
