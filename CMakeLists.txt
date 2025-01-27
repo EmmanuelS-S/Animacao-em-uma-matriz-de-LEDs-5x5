@@ -28,42 +28,39 @@ set(PICO_BOARD pico_w CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(animacao-em-uma-matriz-de-leds-5x5 C CXX ASM)
+project(animacao C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(animacao-em-uma-matriz-de-leds-5x5 
-    Tarefa1.c
-    ws2812.pio.h 
-    )
+add_executable(animacao animacao.c )
 
-pico_set_program_name(animacao-em-uma-matriz-de-leds-5x5 "animacao-em-uma-matriz-de-leds-5x5")
-pico_set_program_version(animacao-em-uma-matriz-de-leds-5x5 "0.1")
+pico_set_program_name(animacao "animacao")
+pico_set_program_version(animacao "0.1")
+
+# Generate PIO header
+pico_generate_pio_header(animacao ${CMAKE_CURRENT_LIST_DIR}/blink.pio)
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(animacao-em-uma-matriz-de-leds-5x5 1)
-pico_enable_stdio_usb(animacao-em-uma-matriz-de-leds-5x5 1)
+pico_enable_stdio_uart(animacao 1)
+pico_enable_stdio_usb(animacao 1)
 
 # Add the standard library to the build
-target_link_libraries(animacao-em-uma-matriz-de-leds-5x5
-        pico_stdlib
-        hardware_pwm
-        hardware_pio)
+target_link_libraries(animacao
+        pico_stdlib)
 
 # Add the standard include files to the build
-target_include_directories(animacao-em-uma-matriz-de-leds-5x5 PRIVATE
+target_include_directories(animacao PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
 )
 
 # Add any user requested libraries
-target_link_libraries(animacao-em-uma-matriz-de-leds-5x5 
+target_link_libraries(animacao 
+        hardware_pio
         
         )
 
-pico_add_extra_outputs(animacao-em-uma-matriz-de-leds-5x5)
+pico_add_extra_outputs(animacao)
 
-pico_enable_stdio_usb(Tarefa1 1)
-pico_enable_stdio_uart(Tarefa1 0)

@@ -1,4 +1,4 @@
 [wokwi]
 version = 1
-firmware = 'build/Tarefa1.uf2'
-elf = 'build/Tarefa1.elf'
+firmware = 'build/animacao.uf2'
+elf = 'build/animacao.elf'

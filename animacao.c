@@ -1,6 +1,6 @@
 #include "pico/stdlib.h"
 #include <stdio.h>
-#include "ws2812.pio.h"  // Biblioteca para WS2812
+#include "blink.pio.h"  // Biblioteca para WS2812
 #include "hardware/pwm.h"
 #include "hardware/gpio.h"
 
