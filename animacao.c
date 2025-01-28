@@ -303,6 +303,56 @@ static void animation_heart(void) {
     run_animation(frames, 5, 500); // 500ms entre os frames
 }
 
+// Animação 5: "Lighting" com 5 frames
+static void animation_lighting(void) {
+    #define BRANCO    matrix_grb(1.0, 1.0, 1.0) // Branco (RGB: 255, 255, 255)
+
+    static const uint32_t frames[5][NUM_LEDS] = {
+        // Frame 1
+        {
+            0, 0, BRANCO, BRANCO, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0
+        },
+        // Frame 2
+        {
+            0, 0, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0
+        },
+        // Frame 3
+        {
+            0, 0, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            BRANCO, BRANCO, BRANCO, BRANCO, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0
+        },
+        // Frame 4
+        {
+            0, 0, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            BRANCO, BRANCO, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            0, 0, 0, 0, 0
+        },
+        // Frame 5
+        {
+            0, 0, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            BRANCO, BRANCO, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            BRANCO, BRANCO, 0, 0, 0
+        }
+    };
+
+    run_animation(frames, 5, 500);
+}
+
 int main() {
     stdio_init_all();
     config_gpio();
