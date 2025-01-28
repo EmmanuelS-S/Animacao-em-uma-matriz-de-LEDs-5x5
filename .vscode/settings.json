@@ -37,4 +37,8 @@
     "raspberry-pi-pico.cmakePath": "${HOME}/.pico-sdk/cmake/v3.29.9/bin/cmake",
     "raspberry-pi-pico.ninjaPath": "${HOME}/.pico-sdk/ninja/v1.12.1/ninja",
     "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "pio.h": "c",
+        "blink.pio.h": "c"
+    },
 }
