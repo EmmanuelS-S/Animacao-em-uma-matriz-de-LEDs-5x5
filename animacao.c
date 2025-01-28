@@ -83,14 +83,14 @@ void control_buzzer(uint8_t buzzer) {
     gpio_put(BUZZER, buzzer);
 }
 
-uint32_t matrix_rgb(double r, double g, double b) {
+uint32_t matrix_grb(double b, double r, double g) {
+    unsigned char B = (unsigned char)(b * 255.0);
     unsigned char R = (unsigned char)(r * 255.0);
     unsigned char G = (unsigned char)(g * 255.0);
-    unsigned char B = (unsigned char)(b * 255.0);
 
-    return ( (uint32_t)B << 24 ) | // Blue
-           ( (uint32_t)G << 16 ) | // Green
-           ( (uint32_t)R <<  8 );  // Red
+    return ( (uint32_t)G << 24 ) |
+           ( (uint32_t)R << 16 ) |
+           ( (uint32_t)B <<  8 );
 }
 // Limpa (desliga) todos os LEDs enviando cor "0"
 static void clear_all_leds(void) {
@@ -123,11 +123,11 @@ static void run_animation(const uint32_t frames[][NUM_LEDS], int num_frames, int
 
 // Animação 0: "Deck Suits" com 5 frames
 static void animation_deck_suits(void) {
-    #define OUROS   matrix_rgb(1.0, 0, 0)    // Vermelho (RGB: 255, 0, 0)
-    #define COPAS   matrix_rgb(0.8, 0, 0)    // Vermelho (~80%)
-    #define ESPADAS matrix_rgb(0, 0, 1.0)    // Azul (RGB: 0, 0, 255)
-    #define PAUS    matrix_rgb(0, 0, 0.8)    // Azul (RGB: 0, 0, 255) (~80%)
-    #define JOKER   matrix_rgb(1.0, 1.0, 1.0) // Branco (100%)
+    #define OUROS   matrix_grb(0, 1.0, 0)    // Vermelho (RGB: 255, 0, 0) GRB
+    #define COPAS   matrix_grb(0, 0.8, 0)    // Vermelho (~80%)
+    #define ESPADAS matrix_grb(0, 0, 1.0)    // Azul (RGB: 0, 0, 255)
+    #define PAUS    matrix_grb(0, 0, 0.8)    // Azul (RGB: 0, 0, 255) (~80%)
+    #define JOKER   matrix_grb(1.0, 1.0, 1.0) // Branco (100%)
 
     static const uint32_t frames[5][NUM_LEDS] = {
         // Frame 1 (Ouros)
@@ -177,7 +177,7 @@ static void animation_deck_suits(void) {
 
 // Animação 1: Snake (7 frames)
 static void animation_snake(void) {
-    #define SNAKE_COLOR matrix_rgb(0, 0.5, 0) // Verde (~50%)
+    #define SNAKE_COLOR matrix_grb(0.5, 0, 0) // Verde (~50%) GRB
     static const uint32_t frames[7][NUM_LEDS] = {
         {
             SNAKE_COLOR,0,SNAKE_COLOR,0,0,
@@ -366,21 +366,21 @@ int main() {
                 }
 
                 case 'B': { // Azul 100%
-                    uint32_t color = matrix_rgb(0, 0, 1.0); // Azul em RGB
+                    uint32_t color = matrix_rgb(1.0, 0, 0); // Azul em RGB
                     for (int i = 0; i < NUM_LEDS; i++) {
                         pio_sm_put_blocking(pio, sm, color);
                     }
                 } break;
 
                 case 'C': { // Vermelho 80%
-                    uint32_t color = matrix_rgb(0.8, 0, 0); // Vermelho em RGB
+                    uint32_t color = matrix_rgb(0, 0.8, 0); // Vermelho em RGB
                     for (int i = 0; i < NUM_LEDS; i++) {
                         pio_sm_put_blocking(pio, sm, color);
                     }
                 } break;
 
                 case 'D': { // Verde 50%
-                    uint32_t color = matrix_rgb(0, 0.5, 0); // Verde em RGB
+                    uint32_t color = matrix_rgb(0, 0, 0.5); // Verde em RGB
                     for (int i = 0; i < NUM_LEDS; i++) {
                         pio_sm_put_blocking(pio, sm, color);
                     }
