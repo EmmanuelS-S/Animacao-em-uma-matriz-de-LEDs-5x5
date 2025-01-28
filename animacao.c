@@ -255,24 +255,46 @@ int main() {
             printf("Tecla pressionada: %c\n", key);
 
             switch (key) {
-                case '0':
+                case '0': {
                     animation_deck_suits();
                     control_buzzer(1); 
                     sleep_ms(500);
                     control_buzzer(0);
                     break;
+                }
 
-                case '1':
+                case '1': {
                     animation_snake();
                     break;
-
-                case 'A':
+                }
+                case '2' : { //Animação que Gabriel Marcone Fará.
+                    printf("Nada\n");
+                    break;
+                }
+                case '3' : {
+                    printf("Nada\n");
+                    break;
+                }
+                case '4' : {
+                    printf("Nada\n");
+                    break;
+                }
+                case '5' : {
+                    printf("Nada\n");
+                    break;
+                }
+                case '6' : {
+                    printf("Nada\n");
+                    break;
+                }
+                case 'A': { // Desliga todos os LEDs
                     clear_all_leds();
 
                     control_buzzer(1);
                     sleep_ms(1000);        //Aciona o Buzzer por 1 segundo após apagar os leds
                     control_buzzer(0);
                     break;
+                }
 
                 case 'B': { // Azul 100%
                     uint32_t color = matrix_rgb(1.0, 0, 0); // Azul em GRB
@@ -302,14 +324,16 @@ int main() {
                     }
                 } break;
 
-
-                case '*':
+                case '*': {
                     printf("Saindo do modo exec e habilitando modo de gravacao...\n");
                     reset_usb_boot(0, 0);
                     break;
+                }
 
-                default:
+                default: {
+                    clear_all_leds();
                     break;
+                }
             }
         }
         sleep_ms(100);
