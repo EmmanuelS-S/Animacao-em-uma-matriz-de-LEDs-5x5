@@ -88,9 +88,9 @@ uint32_t matrix_rgb(double r, double g, double b) {
     unsigned char G = (unsigned char)(g * 255.0);
     unsigned char B = (unsigned char)(b * 255.0);
 
-    return ( (uint32_t)R << 24 ) | // Red
+    return ( (uint32_t)B << 24 ) | // Blue
            ( (uint32_t)G << 16 ) | // Green
-           ( (uint32_t)B <<  8 );  // Blue
+           ( (uint32_t)R <<  8 );  // Red
 }
 // Limpa (desliga) todos os LEDs enviando cor "0"
 static void clear_all_leds(void) {
