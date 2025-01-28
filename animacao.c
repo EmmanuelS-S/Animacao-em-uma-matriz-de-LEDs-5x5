@@ -123,11 +123,11 @@ static void run_animation(const uint32_t frames[][NUM_LEDS], int num_frames, int
 
 // Animação 0: "Deck Suits" com 5 frames
 static void animation_deck_suits(void) {
-    #define OUROS   0x00FF00    // Vermelho
-    #define COPAS   0x00CC00    // Vermelho (~80%)
-    #define ESPADAS 0x800000    // Verde (~50%)
-    #define PAUS    0x0000FF    // Azul
-    #define JOKER   0x333333    // Branco (~20%)
+    #define OUROS   matrix_rgb(1.0, 0, 0)    // Vermelho (RGB: 255, 0, 0)
+    #define COPAS   matrix_rgb(0.8, 0, 0)    // Vermelho (~80%)
+    #define ESPADAS matrix_rgb(0, 0, 1.0)    // Azul (RGB: 0, 0, 255)
+    #define PAUS    matrix_rgb(0, 0, 0.8)    // Azul (RGB: 0, 0, 255) (~80%)
+    #define JOKER   matrix_rgb(1.0, 1.0, 1.0) // Branco (100%)
 
     static const uint32_t frames[5][NUM_LEDS] = {
         // Frame 1 (Ouros)
@@ -177,7 +177,7 @@ static void animation_deck_suits(void) {
 
 // Animação 1: Snake (7 frames)
 static void animation_snake(void) {
-    #define SNAKE_COLOR 0x800000    // Verde (~50%)
+    #define SNAKE_COLOR matrix_rgb(0, 0.5, 0) // Verde (~50%)
     static const uint32_t frames[7][NUM_LEDS] = {
         {
             SNAKE_COLOR,0,SNAKE_COLOR,0,0,
