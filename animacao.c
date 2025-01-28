@@ -353,6 +353,56 @@ static void animation_lighting(void) {
     run_animation(frames, 5, 500);
 }
 
+// Animação 6: "Sol Nascendo" com 5 frames
+static void animation_sol_nascendo(void) {
+    #define AMARELO  matrix_grb(1.0, 1.0, 0)    // Amarelo (RGB: 255, 255, 0)
+
+    static const uint32_t frames[5][NUM_LEDS] = {
+        // Frame 1
+        {
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, AMARELO, AMARELO, AMARELO, 0
+        },
+        // Frame 2
+        {
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, AMARELO, AMARELO, AMARELO, 0,
+            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO
+        },
+        // Frame 3
+        {
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, AMARELO, AMARELO, AMARELO, 0,
+            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO,
+            0, AMARELO, AMARELO, AMARELO, 0
+        },
+        // Frame 4
+        {
+            0, 0, 0, 0, 0,
+            0, AMARELO, AMARELO, AMARELO, AMARELO,
+            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO,
+            0, AMARELO, AMARELO, AMARELO, 0,
+            0, 0, 0, 0, 0
+        },
+        // Frame 5
+        {
+            0, AMARELO, AMARELO, AMARELO, AMARELO,
+            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO,
+            0, AMARELO, AMARELO, AMARELO, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0
+        }
+    };
+
+    run_animation(frames, 5, 500);
+}
+
 int main() {
     stdio_init_all();
     config_gpio();
