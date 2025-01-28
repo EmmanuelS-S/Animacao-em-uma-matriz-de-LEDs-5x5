@@ -32,16 +32,6 @@ const char keys[ROWS][COL] = {
     {'*','0','#','D'}
 };
 
-uint32_t matrix_rgb(double b, double r, double g) {
-    unsigned char B = (unsigned char)(b * 255.0);
-    unsigned char R = (unsigned char)(r * 255.0);
-    unsigned char G = (unsigned char)(g * 255.0);
-
-    return ( (uint32_t)G << 24 ) |
-           ( (uint32_t)R << 16 ) |
-           ( (uint32_t)B <<  8 );
-}
-
 // Variáveis globais para PIO
 static PIO  pio = pio0;
 static uint sm  = 0;
@@ -93,10 +83,20 @@ void control_buzzer(uint8_t buzzer) {
     gpio_put(BUZZER, buzzer);
 }
 
-// Limpa (desliga) todos os LEDs enviando cor "0"
-static void clear_all_leds(void) {
+uint32_t matrix_rgb(double b, double r, double g) {
+    unsigned char B = (unsigned char)(b * 255.0);
+    unsigned char R = (unsigned char)(r * 255.0);
+    unsigned char G = (unsigned char)(g * 255.0);
+
+    return ( (uint32_t)G << 24 ) |
+           ( (uint32_t)R << 16 ) |
+           ( (uint32_t)B <<  8 );
+}
+
+static void control_all_leds(double b, double r, double g) {
+    uint32_t color = matrix_rgb(b, r, g);
     for (int16_t i = 0; i < NUM_LEDS; i++) {
-        pio_sm_put_blocking(pio, sm, 0);
+        pio_sm_put_blocking(pio, sm, color);
     }
 }
 
@@ -112,7 +112,7 @@ static void draw_frame(const uint32_t frame[NUM_LEDS]) {
 static void run_animation(const uint32_t frames[][NUM_LEDS], int num_frames, int delay_ms) {
     for (int i = 0; i < num_frames; i++) {
         // Apaga tudo antes de desenhar
-        clear_all_leds();
+        control_all_leds(0, 0, 0);
         sleep_us(100);
 
         // Desenha o quadro i
@@ -288,7 +288,7 @@ int main() {
                     break;
                 }
                 case 'A': { // Desliga todos os LEDs
-                    clear_all_leds();
+                    control_all_leds(0, 0, 0);
 
                     control_buzzer(1);
                     sleep_ms(1000);        //Aciona o Buzzer por 1 segundo após apagar os leds
@@ -297,31 +297,19 @@ int main() {
                 }
 
                 case 'B': { // Azul 100%
-                    uint32_t color = matrix_rgb(1.0, 0, 0); // Azul em GRB
-                    for (int i = 0; i < NUM_LEDS; i++) {
-                        pio_sm_put_blocking(pio, sm, color);
-                    }
+                    control_all_leds(1.0, 0, 0); // Azul em GRB
                 } break;
 
                 case 'C': { // Vermelho 80%
-                    uint32_t color = matrix_rgb(0, 0.8, 0); // Vermelho em GRB
-                    for (int i = 0; i < NUM_LEDS; i++) {
-                        pio_sm_put_blocking(pio, sm, color);
-                    }
+                    control_all_leds(0, 0.8, 0); // Vermelho em GRB
                 } break;
 
                 case 'D': { // Verde 50%
-                    uint32_t color = matrix_rgb(0, 0, 0.5); // Verde em GRB
-                    for (int i = 0; i < NUM_LEDS; i++) {
-                        pio_sm_put_blocking(pio, sm, color);
-                    }
+                    control_all_leds(0, 0, 0.5); // Verde em GRB
                 } break;
 
                 case '#': { // Branco 20%
-                    uint32_t color = matrix_rgb(0.2, 0.2, 0.2); // Branco em GRB
-                    for (int i = 0; i < NUM_LEDS; i++) {
-                        pio_sm_put_blocking(pio, sm, color);
-                    }
+                    control_all_leds(0.2, 0.2, 0.2); // Branco em GRB
                 } break;
 
                 case '*': {
@@ -331,7 +319,7 @@ int main() {
                 }
 
                 default: {
-                    clear_all_leds();
+                    control_all_leds(0, 0, 0);
                     break;
                 }
             }
