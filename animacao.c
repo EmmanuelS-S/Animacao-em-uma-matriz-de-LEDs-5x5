@@ -32,16 +32,6 @@ const char keys[ROWS][COL] = {
     {'*','0','#','D'}
 };
 
-uint32_t matrix_rgb(double b, double r, double g) {
-    unsigned char B = (unsigned char)(b * 255.0);
-    unsigned char R = (unsigned char)(r * 255.0);
-    unsigned char G = (unsigned char)(g * 255.0);
-
-    return ( (uint32_t)G << 24 ) |
-           ( (uint32_t)R << 16 ) |
-           ( (uint32_t)B <<  8 );
-}
-
 // Variáveis globais para PIO
 static PIO  pio = pio0;
 static uint sm  = 0;
@@ -65,7 +55,7 @@ char read_keypad(void) {
     for (int r = 0; r < ROWS; r++) {
         // Ativa a linha
         gpio_put(ROW_PIN[r], true);
-        sleep_us(200);
+        sleep_us(1000);
 
         // Verifica colunas
         for (int c = 0; c < COL; c++) {
@@ -93,6 +83,15 @@ void control_buzzer(uint8_t buzzer) {
     gpio_put(BUZZER, buzzer);
 }
 
+uint32_t matrix_rgb(double r, double g, double b) {
+    unsigned char R = (unsigned char)(r * 255.0);
+    unsigned char G = (unsigned char)(g * 255.0);
+    unsigned char B = (unsigned char)(b * 255.0);
+
+    return ( (uint32_t)R << 24 ) | // Red
+           ( (uint32_t)G << 16 ) | // Green
+           ( (uint32_t)B <<  8 );  // Blue
+}
 // Limpa (desliga) todos os LEDs enviando cor "0"
 static void clear_all_leds(void) {
     for (int16_t i = 0; i < NUM_LEDS; i++) {
