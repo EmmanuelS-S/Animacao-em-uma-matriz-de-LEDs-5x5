@@ -296,28 +296,28 @@ int main() {
                 }
 
                 case 'B': { // Azul 100%
-                    uint32_t color = matrix_rgb(1.0, 0, 0); // Azul em GRB
+                    uint32_t color = matrix_rgb(0, 0, 1.0); // Azul em RGB
                     for (int i = 0; i < NUM_LEDS; i++) {
                         pio_sm_put_blocking(pio, sm, color);
                     }
                 } break;
 
                 case 'C': { // Vermelho 80%
-                    uint32_t color = matrix_rgb(0, 0.8, 0); // Vermelho em GRB
+                    uint32_t color = matrix_rgb(0.8, 0, 0); // Vermelho em RGB
                     for (int i = 0; i < NUM_LEDS; i++) {
                         pio_sm_put_blocking(pio, sm, color);
                     }
                 } break;
 
                 case 'D': { // Verde 50%
-                    uint32_t color = matrix_rgb(0, 0, 0.5); // Verde em GRB
+                    uint32_t color = matrix_rgb(0, 0.5, 0); // Verde em RGB
                     for (int i = 0; i < NUM_LEDS; i++) {
                         pio_sm_put_blocking(pio, sm, color);
                     }
                 } break;
 
                 case '#': { // Branco 20%
-                    uint32_t color = matrix_rgb(0.2, 0.2, 0.2); // Branco em GRB
+                    uint32_t color = matrix_rgb(0.2, 0.2, 0.2); // Branco em RGB
                     for (int i = 0; i < NUM_LEDS; i++) {
                         pio_sm_put_blocking(pio, sm, color);
                     }
