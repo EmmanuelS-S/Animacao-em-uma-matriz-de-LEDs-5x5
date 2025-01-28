@@ -123,11 +123,11 @@ static void run_animation(const uint32_t frames[][NUM_LEDS], int num_frames, int
 
 // Animação 0: "Deck Suits" com 5 frames
 static void animation_deck_suits(void) {
-    #define OUROS   matrix_grb(0, 1.0, 0)    // Vermelho (RGB: 255, 0, 0) GRB
-    #define COPAS   matrix_grb(0, 0.8, 0)    // Vermelho (~80%)
-    #define ESPADAS matrix_grb(0, 0, 1.0)    // Azul (RGB: 0, 0, 255)
-    #define PAUS    matrix_grb(0, 0, 0.8)    // Azul (RGB: 0, 0, 255) (~80%)
-    #define JOKER   matrix_grb(1.0, 1.0, 1.0) // Branco (100%)
+    #define OUROS    0x00FF00 // Verde (~100%) 
+    #define COPAS    0x00CC00 // Verde (~80%)
+    #define ESPADAS  0x0000FF // Azul (RGB: 0, 0, 255)
+    #define PAUS     0x0000CC // Azul (~80%)
+    #define JOKER    0xFFFFFF // Branco (RGB: 255, 255, 255)
 
     static const uint32_t frames[5][NUM_LEDS] = {
         // Frame 1 (Ouros)
@@ -177,7 +177,7 @@ static void animation_deck_suits(void) {
 
 // Animação 1: Snake (7 frames)
 static void animation_snake(void) {
-    #define SNAKE_COLOR matrix_grb(0.5, 0, 0) // Verde (~50%) GRB
+    #define SNAKE_COLOR 0x7F0000 // Verde (~50%) 
     static const uint32_t frames[7][NUM_LEDS] = {
         {
             SNAKE_COLOR,0,SNAKE_COLOR,0,0,
@@ -303,6 +303,106 @@ static void animation_heart(void) {
     run_animation(frames, 5, 500); // 500ms entre os frames
 }
 
+// Animação 5: "Lighting" com 5 frames
+static void animation_lighting(void) {
+    #define BRANCO   0xFFFFFF // Branco (RGB: 255, 255, 255)
+
+    static const uint32_t frames[5][NUM_LEDS] = {
+        // Frame 1
+        {
+            0, 0, BRANCO, BRANCO, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0
+        },
+        // Frame 2
+        {
+            0, 0, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0
+        },
+        // Frame 3
+        {
+            0, 0, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            BRANCO, BRANCO, BRANCO, BRANCO, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0
+        },
+        // Frame 4
+        {
+            0, 0, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            BRANCO, BRANCO, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            0, 0, 0, 0, 0
+        },
+        // Frame 5
+        {
+            0, 0, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            BRANCO, BRANCO, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            BRANCO, BRANCO, 0, 0, 0
+        }
+    };
+
+    run_animation(frames, 5, 500);
+}
+
+// Animação 6: "Sol Nascendo" com 5 frames
+static void animation_sol_nascendo(void) {
+    #define AMARELO  0xFFFF00 // Amarelo (RGB: 255, 255, 0)
+
+    static const uint32_t frames[5][NUM_LEDS] = {
+        // Frame 1
+        {
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, AMARELO, AMARELO, AMARELO, 0
+        },
+        // Frame 2
+        {
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, AMARELO, AMARELO, AMARELO, 0,
+            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO
+        },
+        // Frame 3
+        {
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, AMARELO, AMARELO, AMARELO, 0,
+            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO,
+            0, AMARELO, AMARELO, AMARELO, 0
+        },
+        // Frame 4
+        {
+            0, 0, 0, 0, 0,
+            0, AMARELO, AMARELO, AMARELO, AMARELO,
+            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO,
+            0, AMARELO, AMARELO, AMARELO, 0,
+            0, 0, 0, 0, 0
+        },
+        // Frame 5
+        {
+            0, AMARELO, AMARELO, AMARELO, AMARELO,
+            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO,
+            0, AMARELO, AMARELO, AMARELO, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0
+        }
+    };
+
+    run_animation(frames, 5, 500);
+}
+
 int main() {
     stdio_init_all();
     config_gpio();
@@ -349,11 +449,11 @@ int main() {
                     break;
                 }
                 case '5' : {
-                    printf("Nada\n");
+                    animation_lighting();
                     break;
                 }
                 case '6' : {
-                    printf("Nada\n");
+                    animation_sol_nascendo();
                     break;
                 }
                 case 'A': { // Desliga todos os LEDs
