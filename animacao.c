@@ -233,6 +233,76 @@ static void animation_snake(void) {
     run_animation(frames, 7, 500);
 }
 
+// Animação 3: "Fade" 
+static void animation_fade(void) {
+    uint32_t frame[NUM_LEDS];
+    for (int brightness = 0; brightness <= 255; brightness += 15) {
+        uint32_t color = matrix_rgb(brightness / 255.0, brightness / 255.0, brightness / 255.0);
+        for (int i = 0; i < NUM_LEDS; i++) {
+            frame[i] = color;
+        }
+        draw_frame(frame);
+        sleep_ms(50);
+    }
+    for (int brightness = 255; brightness >= 0; brightness -= 15) {
+        uint32_t color = matrix_rgb(brightness / 255.0, brightness / 255.0, brightness / 255.0);
+        for (int i = 0; i < NUM_LEDS; i++) {
+            frame[i] = color;
+        }
+        draw_frame(frame);
+        sleep_ms(50);
+    }
+}
+
+// Animação 4: "Coração Pulsante"
+static void animation_heart(void) {
+    #define HEART_COLOR 0xFF0000 // Vermelho
+    static const uint32_t frames[5][NUM_LEDS] = {
+        // Frame 1: Pequeno coração
+        {
+            0,0,0,0,0,
+            0,HEART_COLOR,0,HEART_COLOR,0,
+            HEART_COLOR,0,0,0,HEART_COLOR,
+            0,HEART_COLOR,0,HEART_COLOR,0,
+            0,0,HEART_COLOR,0,0
+        },
+        // Frame 2: Crescendo
+        {
+            0,0,HEART_COLOR,0,0,
+            HEART_COLOR,HEART_COLOR,0,HEART_COLOR,HEART_COLOR,
+            HEART_COLOR,0,0,0,HEART_COLOR,
+            0,HEART_COLOR,0,HEART_COLOR,0,
+            0,0,HEART_COLOR,0,0
+        },
+        // Frame 3: Coração cheio
+        {
+            0,HEART_COLOR,HEART_COLOR,HEART_COLOR,0,
+            HEART_COLOR,HEART_COLOR,0,HEART_COLOR,HEART_COLOR,
+            HEART_COLOR,0,0,0,HEART_COLOR,
+            0,HEART_COLOR,HEART_COLOR,HEART_COLOR,0,
+            0,0,HEART_COLOR,0,0
+        },
+        // Frame 4: Diminuindo
+        {
+            0,0,HEART_COLOR,0,0,
+            HEART_COLOR,HEART_COLOR,0,HEART_COLOR,HEART_COLOR,
+            HEART_COLOR,0,0,0,HEART_COLOR,
+            0,HEART_COLOR,0,HEART_COLOR,0,
+            0,0,HEART_COLOR,0,0
+        },
+        // Frame 5: Retornando ao pequeno coração
+        {
+            0,0,0,0,0,
+            0,HEART_COLOR,0,HEART_COLOR,0,
+            HEART_COLOR,0,0,0,HEART_COLOR,
+            0,HEART_COLOR,0,HEART_COLOR,0,
+            0,0,HEART_COLOR,0,0
+        }
+    };
+
+    run_animation(frames, 5, 500); // 500ms entre os frames
+}
+
 int main() {
     stdio_init_all();
     config_gpio();
@@ -270,12 +340,12 @@ int main() {
                     printf("Nada\n");
                     break;
                 }
-                case '3' : {
-                    printf("Nada\n");
+                case '3' : {  //Efeito Fade
+                    animation_fade();
                     break;
                 }
-                case '4' : {
-                    printf("Nada\n");
+                case '4' : {  //coração pulsante
+                    animation_heart();
                     break;
                 }
                 case '5' : {
