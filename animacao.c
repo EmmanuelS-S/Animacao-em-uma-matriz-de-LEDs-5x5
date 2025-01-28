@@ -103,22 +103,16 @@ static void control_all_leds(double b, double r, double g) {
 // Envia UM quadro (25 pixels)
 static void draw_frame(const uint32_t frame[NUM_LEDS]) {
     for (int i = 0; i < NUM_LEDS; i++) {
-        uint32_t rgb = frame[i];
-        pio_sm_put_blocking(pio, sm, rgb);
+        pio_sm_put_blocking(pio, sm, frame[i]); // Envia cada cor do frame atual
     }
+    sleep_us(80); // Pausa para garantir que os LEDs processam os dados
 }
 
 // Roda uma animação de `num_frames` quadros; cada quadro tem 25 LEDs.
 static void run_animation(const uint32_t frames[][NUM_LEDS], int num_frames, int delay_ms) {
     for (int i = 0; i < num_frames; i++) {
-        // Apaga tudo antes de desenhar
-        control_all_leds(0, 0, 0);
-        sleep_us(100);
-
-        // Desenha o quadro i
-        draw_frame(frames[i]);
-
-        sleep_ms(delay_ms);
+        draw_frame(frames[i]); // Envia o quadro atual
+        sleep_ms(delay_ms);    // Espera o tempo especificado antes do próximo quadro
     }
 }
 
@@ -256,15 +250,18 @@ int main() {
 
             switch (key) {
                 case '0': {
-                    animation_deck_suits();
                     control_buzzer(1); 
-                    sleep_ms(500);
+                    animation_deck_suits();
                     control_buzzer(0);
+
+                    control_all_leds(0, 0, 0);
                     break;
                 }
 
                 case '1': {
                     animation_snake();
+                    
+                    control_all_leds(0, 0, 0);
                     break;
                 }
                 case '2' : { //Animação que Gabriel Marcone Fará.
