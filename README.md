@@ -61,5 +61,4 @@ O código foi testado e validado com sucesso no simulador **Wokwi**, demonstrand
 - Gabriel Marcone
 - Kauan Teixeira
 - Matheus Amorim
-- Vitória Tanan
 
