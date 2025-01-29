@@ -236,16 +236,16 @@ static void animation_snake(void) {
 // Animação 3: "Fade" 
 static void animation_fade(void) {
     uint32_t frame[NUM_LEDS];
-    for (int brightness = 0; brightness <= 255; brightness += 15) {
-        uint32_t color = matrix_rgb(brightness / 255.0, brightness / 255.0, brightness / 255.0);
+    for (double brightness = 0; brightness <= 255; brightness += 15) {
+        uint32_t color = matrix_grb(brightness / 255.0, brightness / 255.0, brightness / 255.0);
         for (int i = 0; i < NUM_LEDS; i++) {
             frame[i] = color;
         }
         draw_frame(frame);
         sleep_ms(50);
     }
-    for (int brightness = 255; brightness >= 0; brightness -= 15) {
-        uint32_t color = matrix_rgb(brightness / 255.0, brightness / 255.0, brightness / 255.0);
+    for (double brightness = 255; brightness >= 0; brightness -= 15) {
+        uint32_t color = matrix_grb(brightness / 255.0, brightness / 255.0, brightness / 255.0);
         for (int i = 0; i < NUM_LEDS; i++) {
             frame[i] = color;
         }
