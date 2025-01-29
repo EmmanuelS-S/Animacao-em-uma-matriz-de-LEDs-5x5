@@ -228,6 +228,159 @@ static void animation_snake(void) {
     run_animation(frames, 7, 500);
 }
 
+// Animação 3: "Fade" 
+static void animation_fade(void) {
+    uint32_t frame[NUM_LEDS];
+    for (double brightness = 0; brightness <= 255; brightness += 15) { //Brilho branco vai aumentando
+        uint32_t color = matrix_rgb(brightness / 255.0, brightness / 255.0, brightness / 255.0);
+        for (int i = 0; i < NUM_LEDS; i++) {
+            frame[i] = color;
+        }
+        draw_frame(frame);
+        sleep_ms(50);
+    }
+    for (double brightness = 255; brightness >= 0; brightness -= 15) { // Brilho Branco vai diminuindo
+        uint32_t color = matrix_rgb(brightness / 255.0, brightness / 255.0, brightness / 255.0);
+        for (int i = 0; i < NUM_LEDS; i++) {
+            frame[i] = color;
+        }
+        draw_frame(frame);
+        sleep_ms(50);
+    }
+}
+
+// Animação 4: "Coração Pulsante"
+static void animation_heart(void) {
+    static const uint8_t brightness[5] = {50, 128, 255, 128, 50}; // Intensidade para cada frame (0-255)
+    
+    static const uint8_t heart_template[NUM_LEDS] = {
+        // Template do coração (1 = LED aceso, 0 = LED apagado)
+        0,0,1,0,0,
+        0,1,1,1,0,
+        1,1,1,1,1,
+        0,1,0,1,0,
+        0,0,0,0,0
+    }; //A imagem é gerada de forma invertida
+
+    static uint32_t frames[5][NUM_LEDS]; // Frames calculados dinamicamente
+
+    // Gera os frames com brilho variável
+    for (int f = 0; f < 5; f++) {
+        for (int i = 0; i < NUM_LEDS; i++) {
+            if (heart_template[i]) {
+                // Ajusta o brilho (escala do vermelho com brilho variável)
+                uint8_t red_intensity = brightness[f];
+                frames[f][i] = (red_intensity << 16); // Apenas vermelho (GRB)
+            } else {
+                frames[f][i] = 0; // LED apagado
+            }
+        }
+    }
+
+    run_animation(frames, 5, 500); // 500ms entre os frames
+}
+
+
+// Animação 5: "Lighting" com 5 frames
+static void animation_lighting(void) {
+    #define BRANCO   0xFFFFFF // Branco (RGB: 255, 255, 255)
+
+    static const uint32_t frames[5][NUM_LEDS] = {
+        // Frame 1
+        {
+            0, 0, BRANCO, BRANCO, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0
+        },
+        // Frame 2
+        {
+            0, 0, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0
+        },
+        // Frame 3
+        {
+            0, 0, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            BRANCO, BRANCO, BRANCO, BRANCO, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0
+        },
+        // Frame 4
+        {
+            0, 0, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            BRANCO, BRANCO, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            0, 0, 0, 0, 0
+        },
+        // Frame 5
+        {
+            0, 0, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            BRANCO, BRANCO, BRANCO, BRANCO, 0,
+            0, BRANCO, BRANCO, 0, 0,
+            BRANCO, BRANCO, 0, 0, 0
+        }
+    };
+
+    run_animation(frames, 5, 500);
+}
+
+// Animação 6: "Sol Nascendo" com 5 frames
+static void animation_sol_nascendo(void) {
+    #define AMARELO  0xFFFF00 // Amarelo (RGB: 255, 255, 0)
+
+    static const uint32_t frames[5][NUM_LEDS] = {
+        // Frame 1
+        {
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, AMARELO, AMARELO, AMARELO, 0
+        },
+        // Frame 2
+        {
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, AMARELO, AMARELO, AMARELO, 0,
+            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO
+        },
+        // Frame 3
+        {
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, AMARELO, AMARELO, AMARELO, 0,
+            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO,
+            0, AMARELO, AMARELO, AMARELO, 0
+        },
+        // Frame 4
+        {
+            0, 0, 0, 0, 0,
+            0, AMARELO, AMARELO, AMARELO, AMARELO,
+            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO,
+            0, AMARELO, AMARELO, AMARELO, 0,
+            0, 0, 0, 0, 0
+        },
+        // Frame 5
+        {
+            0, AMARELO, AMARELO, AMARELO, AMARELO,
+            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO,
+            0, AMARELO, AMARELO, AMARELO, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0
+        }
+    };
+
+    run_animation(frames, 5, 500);
+}
+
 int main() {
     stdio_init_all();
     config_gpio();
@@ -260,7 +413,7 @@ int main() {
 
                 case '1': {
                     animation_snake();
-                    
+
                     control_all_leds(0, 0, 0);
                     break;
                 }
@@ -269,19 +422,23 @@ int main() {
                     break;
                 }
                 case '3' : {
-                    printf("Nada\n");
+                    animation_fade();
+                    control_all_leds(0, 0, 0);
                     break;
                 }
                 case '4' : {
-                    printf("Nada\n");
+                    animation_heart();
+                    control_all_leds(0, 0, 0);
                     break;
                 }
                 case '5' : {
-                    printf("Nada\n");
+                    animation_lighting();
+                    control_all_leds(0, 0, 0);
                     break;
                 }
                 case '6' : {
-                    printf("Nada\n");
+                    animation_sol_nascendo();
+                    control_all_leds(0, 0, 0);
                     break;
                 }
                 case 'A': { // Desliga todos os LEDs
