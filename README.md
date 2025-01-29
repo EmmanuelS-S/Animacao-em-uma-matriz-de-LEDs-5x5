@@ -55,11 +55,8 @@ O código foi testado e validado com sucesso no simulador **Wokwi**, demonstrand
 [🔗 Link para o vídeo do ensaio (duração máx. de 3 minutos)]()
 
 ## 👨‍💻 Contribuidores
-- Adriano Trajano
-- Eduardo Lino
-- Emanuel Souza
-- Gabriel Marcone
-- Kauan Teixeira
-- Matheus Amorim
-- Vitória Tanan
-
+- [Adrian Trajano](https://github.com/AdrianTr97)
+- [Eduardo Lino](https://github.com/Linosz)
+- [Emmanuel Souza](https://github.com/EmmanuelS-S) 
+- [Gabriel Marcone](https://github.com/gabrielmarcone)
+- [Kauan Teixeira](https://github.com/kauanth21)
