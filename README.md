@@ -6,7 +6,7 @@ Este projeto implementa a geração de animações em uma matriz de LEDs RGB (5x
 ## 🚀 Funcionalidades
 
 ### 🎨 Controle de Animações na Matriz de LEDs:
-- 7 animações diferentes associadas às teclas `0-9`.
+- 7 animações diferentes associadas às teclas `0-6`.
 - Cada animação conta com no mínimo 5 frames para garantir fluidez.
 - O FPS das animações é ajustável pela equipe de desenvolvimento.
 
@@ -29,8 +29,8 @@ Este projeto implementa a geração de animações em uma matriz de LEDs RGB (5x
 
 | Componente             | GPIO |
 |------------------------|------|
-| Matriz de LEDs (5x5)  | GPIO 14 |
-| Teclado Matricial 4x4 | GPIO 10-13 |
+| Matriz de LEDs (5x5)  | GPIO 7 |
+| Teclado Matricial 4x4 | GPIO 2-5; 6, 8, 9 e 10 |
 | Buzzer (opcional)     | GPIO 21 |
 | Terra                 | Todos os componentes |
 
