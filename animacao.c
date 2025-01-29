@@ -83,7 +83,7 @@ void control_buzzer(uint8_t buzzer) {
     gpio_put(BUZZER, buzzer);
 }
 
-uint32_t matrix_grb(double b, double r, double g) {
+uint32_t matrix_rgb(double b, double r, double g) {
     unsigned char B = (unsigned char)(b * 255.0);
     unsigned char R = (unsigned char)(r * 255.0);
     unsigned char G = (unsigned char)(g * 255.0);
@@ -92,42 +92,37 @@ uint32_t matrix_grb(double b, double r, double g) {
            ( (uint32_t)R << 16 ) |
            ( (uint32_t)B <<  8 );
 }
-// Limpa (desliga) todos os LEDs enviando cor "0"
-static void clear_all_leds(void) {
+
+static void control_all_leds(double b, double r, double g) {
+    uint32_t color = matrix_rgb(b, r, g);
     for (int16_t i = 0; i < NUM_LEDS; i++) {
-        pio_sm_put_blocking(pio, sm, 0);
+        pio_sm_put_blocking(pio, sm, color);
     }
 }
 
 // Envia UM quadro (25 pixels)
 static void draw_frame(const uint32_t frame[NUM_LEDS]) {
     for (int i = 0; i < NUM_LEDS; i++) {
-        uint32_t rgb = frame[i];
-        pio_sm_put_blocking(pio, sm, rgb);
+        pio_sm_put_blocking(pio, sm, frame[i]); // Envia cada cor do frame atual
     }
+    sleep_us(80); // Pausa para garantir que os LEDs processam os dados
 }
 
 // Roda uma animação de `num_frames` quadros; cada quadro tem 25 LEDs.
 static void run_animation(const uint32_t frames[][NUM_LEDS], int num_frames, int delay_ms) {
     for (int i = 0; i < num_frames; i++) {
-        // Apaga tudo antes de desenhar
-        clear_all_leds();
-        sleep_us(100);
-
-        // Desenha o quadro i
-        draw_frame(frames[i]);
-
-        sleep_ms(delay_ms);
+        draw_frame(frames[i]); // Envia o quadro atual
+        sleep_ms(delay_ms);    // Espera o tempo especificado antes do próximo quadro
     }
 }
 
 // Animação 0: "Deck Suits" com 5 frames
 static void animation_deck_suits(void) {
-    #define OUROS    0x00FF00 // Verde (~100%) 
-    #define COPAS    0x00CC00 // Verde (~80%)
-    #define ESPADAS  0x0000FF // Azul (RGB: 0, 0, 255)
-    #define PAUS     0x0000CC // Azul (~80%)
-    #define JOKER    0xFFFFFF // Branco (RGB: 255, 255, 255)
+    #define OUROS   0x00FF00    
+    #define COPAS   0xFF0000   
+    #define ESPADAS 0xFFFFFF    
+    #define PAUS    0x0000FF    
+    #define JOKER   0xFFFF00   
 
     static const uint32_t frames[5][NUM_LEDS] = {
         // Frame 1 (Ouros)
@@ -140,11 +135,11 @@ static void animation_deck_suits(void) {
         },
         // Frame 2 (Copas)
         {
-          0,0,COPAS,0,0,
-          0,COPAS,COPAS,COPAS,0,
-          COPAS,COPAS,COPAS,COPAS,COPAS,
-          0,COPAS,COPAS,COPAS,0,
-          0,0,COPAS,0,0
+            0,0,COPAS,0,0,
+            0,COPAS,COPAS,COPAS,0,
+            COPAS,COPAS,COPAS,COPAS,COPAS,
+            0,COPAS,0,COPAS,0,
+            0,0,0,0,0
         },
         // Frame 3 (Espadas)
         {
@@ -233,19 +228,19 @@ static void animation_snake(void) {
     run_animation(frames, 7, 500);
 }
 
-// Animação 3: "Fade" 
+// Animação 2: "Fade" 
 static void animation_fade(void) {
     uint32_t frame[NUM_LEDS];
-    for (double brightness = 0; brightness <= 255; brightness += 15) {
-        uint32_t color = matrix_grb(brightness / 255.0, brightness / 255.0, brightness / 255.0);
+    for (double brightness = 0; brightness <= 255; brightness += 15) { //Brilho branco vai aumentando
+        uint32_t color = matrix_rgb(brightness / 255.0, brightness / 255.0, brightness / 255.0);
         for (int i = 0; i < NUM_LEDS; i++) {
             frame[i] = color;
         }
         draw_frame(frame);
         sleep_ms(50);
     }
-    for (double brightness = 255; brightness >= 0; brightness -= 15) {
-        uint32_t color = matrix_grb(brightness / 255.0, brightness / 255.0, brightness / 255.0);
+    for (double brightness = 255; brightness >= 0; brightness -= 15) { // Brilho Branco vai diminuindo
+        uint32_t color = matrix_rgb(brightness / 255.0, brightness / 255.0, brightness / 255.0);
         for (int i = 0; i < NUM_LEDS; i++) {
             frame[i] = color;
         }
@@ -254,108 +249,89 @@ static void animation_fade(void) {
     }
 }
 
-// Animação 4: "Coração Pulsante"
+// Animação 3: "Coração Pulsante"
 static void animation_heart(void) {
-    #define HEART_COLOR 0xFF0000 // Vermelho
-    static const uint32_t frames[5][NUM_LEDS] = {
-        // Frame 1: Pequeno coração
-        {
-            0,0,0,0,0,
-            0,HEART_COLOR,0,HEART_COLOR,0,
-            HEART_COLOR,0,0,0,HEART_COLOR,
-            0,HEART_COLOR,0,HEART_COLOR,0,
-            0,0,HEART_COLOR,0,0
-        },
-        // Frame 2: Crescendo
-        {
-            0,0,HEART_COLOR,0,0,
-            HEART_COLOR,HEART_COLOR,0,HEART_COLOR,HEART_COLOR,
-            HEART_COLOR,0,0,0,HEART_COLOR,
-            0,HEART_COLOR,0,HEART_COLOR,0,
-            0,0,HEART_COLOR,0,0
-        },
-        // Frame 3: Coração cheio
-        {
-            0,HEART_COLOR,HEART_COLOR,HEART_COLOR,0,
-            HEART_COLOR,HEART_COLOR,0,HEART_COLOR,HEART_COLOR,
-            HEART_COLOR,0,0,0,HEART_COLOR,
-            0,HEART_COLOR,HEART_COLOR,HEART_COLOR,0,
-            0,0,HEART_COLOR,0,0
-        },
-        // Frame 4: Diminuindo
-        {
-            0,0,HEART_COLOR,0,0,
-            HEART_COLOR,HEART_COLOR,0,HEART_COLOR,HEART_COLOR,
-            HEART_COLOR,0,0,0,HEART_COLOR,
-            0,HEART_COLOR,0,HEART_COLOR,0,
-            0,0,HEART_COLOR,0,0
-        },
-        // Frame 5: Retornando ao pequeno coração
-        {
-            0,0,0,0,0,
-            0,HEART_COLOR,0,HEART_COLOR,0,
-            HEART_COLOR,0,0,0,HEART_COLOR,
-            0,HEART_COLOR,0,HEART_COLOR,0,
-            0,0,HEART_COLOR,0,0
-        }
-    };
+    static const uint8_t brightness[5] = {50, 128, 255, 128, 50}; // Intensidade para cada frame (0-255)
+    
+    static const uint8_t heart_template[NUM_LEDS] = {
+        // Template do coração (1 = LED aceso, 0 = LED apagado)
+        0,0,1,0,0,
+        0,1,1,1,0,
+        1,1,1,1,1,
+        0,1,0,1,0,
+        0,0,0,0,0
+    }; //A imagem é gerada de forma invertida
 
+    static uint32_t frames[5][NUM_LEDS]; // Frames calculados dinamicamente
+
+    // Gera os frames com brilho variável
+    for (int f = 0; f < 5; f++) {
+        for (int i = 0; i < NUM_LEDS; i++) {
+            if (heart_template[i]) {
+                // Ajusta o brilho (escala do vermelho com brilho variável)
+                uint8_t red_intensity = brightness[f];
+                frames[f][i] = (red_intensity << 16); // Apenas vermelho (GRB)
+            } else {
+                frames[f][i] = 0; // LED apagado
+            }
+        }
+    }
     run_animation(frames, 5, 500); // 500ms entre os frames
 }
 
-// Animação 5: "Lighting" com 5 frames
+// Animação 4: "Lighting" com 5 frames
 static void animation_lighting(void) {
-    #define BRANCO   0xFFFFFF // Branco (RGB: 255, 255, 255)
+    #define AZUL 0x00FF00 // Azul (GRB: 0, 0, 255)
 
     static const uint32_t frames[5][NUM_LEDS] = {
         // Frame 1
         {
-            0, 0, BRANCO, BRANCO, 0,
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0
+            0, 0, 0, 0, 0,
+            0, 0, AZUL, 0, 0
         },
         // Frame 2
         {
-            0, 0, BRANCO, BRANCO, 0,
-            0, BRANCO, BRANCO, 0, 0,
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0
+            0, 0, 0, 0, 0,
+            0, 0, AZUL, 0, 0,
+            0, 0, AZUL, 0, 0
         },
         // Frame 3
         {
-            0, 0, BRANCO, BRANCO, 0,
-            0, BRANCO, BRANCO, 0, 0,
-            BRANCO, BRANCO, BRANCO, BRANCO, 0,
             0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0
+            0, 0, 0, 0, 0,
+            0, 0, AZUL, 0, 0,
+            0, AZUL, AZUL, 0, 0,
+            0, AZUL, 0, 0, 0
         },
         // Frame 4
         {
-            0, 0, BRANCO, BRANCO, 0,
-            0, BRANCO, BRANCO, 0, 0,
-            BRANCO, BRANCO, BRANCO, BRANCO, 0,
-            0, BRANCO, BRANCO, 0, 0,
-            0, 0, 0, 0, 0
+            0, 0, 0, 0, 0,
+            0, AZUL, 0, 0, 0,
+            AZUL, 0, 0, AZUL, 0,
+            0, AZUL, AZUL, 0, 0,
+            0, AZUL, 0, 0, 0
         },
         // Frame 5
         {
-            0, 0, BRANCO, BRANCO, 0,
-            0, BRANCO, BRANCO, 0, 0,
-            BRANCO, BRANCO, BRANCO, BRANCO, 0,
-            0, BRANCO, BRANCO, 0, 0,
-            BRANCO, BRANCO, 0, 0, 0
+            AZUL, AZUL, 0, 0, AZUL,
+            0, AZUL, 0, AZUL, 0,
+            0, 0, AZUL, 0, 0,
+            0, AZUL, 0, AZUL, 0,
+            0, AZUL, 0, 0, 0
         }
     };
 
     run_animation(frames, 5, 500);
 }
 
-// Animação 6: "Sol Nascendo" com 5 frames
-static void animation_sol_nascendo(void) {
-    #define AMARELO  0xFFFF00 // Amarelo (RGB: 255, 255, 0)
+// Animação 5: "Sol se Pondo" com 5 frames
+static void animation_sol_se_pondo(void) {
+    #define VERMELHO  0xFF0000 // VERMELHO (RGB: 255, 0, 0)
 
     static const uint32_t frames[5][NUM_LEDS] = {
         // Frame 1
@@ -364,39 +340,39 @@ static void animation_sol_nascendo(void) {
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0,
-            0, AMARELO, AMARELO, AMARELO, 0
+            0, 0, VERMELHO, 0, 0
         },
         // Frame 2
         {
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0,
-            0, AMARELO, AMARELO, AMARELO, 0,
-            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO
+            0, 0, VERMELHO, 0, 0,
+            0, VERMELHO, VERMELHO, 0, 0
         },
         // Frame 3
         {
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0,
-            0, AMARELO, AMARELO, AMARELO, 0,
-            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO,
-            0, AMARELO, AMARELO, AMARELO, 0
+            0, 0, VERMELHO, 0, 0,
+            0, VERMELHO, VERMELHO, 0, 0,
+            0, VERMELHO, VERMELHO, VERMELHO, 0
         },
         // Frame 4
         {
             0, 0, 0, 0, 0,
-            0, AMARELO, AMARELO, AMARELO, AMARELO,
-            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO,
-            0, AMARELO, AMARELO, AMARELO, 0,
-            0, 0, 0, 0, 0
+            0, 0, VERMELHO, 0, 0,
+            0, VERMELHO, VERMELHO, 0, 0,
+            0, VERMELHO, VERMELHO, VERMELHO, 0,
+            VERMELHO, VERMELHO, VERMELHO, VERMELHO, VERMELHO
         },
         // Frame 5
         {
-            0, AMARELO, AMARELO, AMARELO, AMARELO,
-            AMARELO, AMARELO, AMARELO, AMARELO, AMARELO,
-            0, AMARELO, AMARELO, AMARELO, 0,
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0
+            0, 0, VERMELHO, 0, 0,
+            0, VERMELHO, VERMELHO, 0, 0,
+            0, VERMELHO, VERMELHO, VERMELHO, 0,
+            VERMELHO, VERMELHO, VERMELHO, VERMELHO, VERMELHO,
+            VERMELHO, VERMELHO, VERMELHO, VERMELHO, VERMELHO
         }
     };
 
@@ -425,74 +401,74 @@ int main() {
 
             switch (key) {
                 case '0': {
-                    animation_deck_suits();
                     control_buzzer(1); 
-                    sleep_ms(500);
+                    animation_deck_suits();
                     control_buzzer(0);
+
+                    control_all_leds(0, 0, 0);
                     break;
                 }
 
                 case '1': {
                     animation_snake();
+
+                    control_all_leds(0, 0, 0);
                     break;
                 }
-                case '2' : { //Animação que Gabriel Marcone Fará.
-                    printf("Nada\n");
-                    break;
-                }
-                case '3' : {  //Efeito Fade
+                
+                case '2' : {
                     animation_fade();
+                    control_all_leds(0, 0, 0);
                     break;
                 }
-                case '4' : {  //coração pulsante
+                
+                case '3' : {
                     animation_heart();
+                    control_all_leds(0, 0, 0);
                     break;
                 }
-                case '5' : {
+                
+                case '4' : {
                     animation_lighting();
+                    control_all_leds(0, 0, 0);
                     break;
                 }
-                case '6' : {
-                    animation_sol_nascendo();
+                
+                case '5' : {
+                    animation_sol_se_pondo();
+                    control_all_leds(0, 0, 0);
                     break;
                 }
+                
                 case 'A': { // Desliga todos os LEDs
-                    clear_all_leds();
+                    control_all_leds(0, 0, 0);
 
                     control_buzzer(1);
                     sleep_ms(1000);        //Aciona o Buzzer por 1 segundo após apagar os leds
                     control_buzzer(0);
                     break;
                 }
-
+                
                 case 'B': { // Azul 100%
-                    uint32_t color = matrix_grb(1.0, 0, 0); // Azul em RGB
-                    for (int i = 0; i < NUM_LEDS; i++) {
-                        pio_sm_put_blocking(pio, sm, color);
-                    }
-                } break;
+                    control_all_leds(1.0, 0, 0); // Azul em GRB
+                    break;
+                }
 
                 case 'C': { // Vermelho 80%
-                    uint32_t color = matrix_grb(0, 0.8, 0); // Vermelho em RGB
-                    for (int i = 0; i < NUM_LEDS; i++) {
-                        pio_sm_put_blocking(pio, sm, color);
-                    }
-                } break;
+                    control_all_leds(0, 0.8, 0); // Vermelho em GRB
+                    break;
+                }
 
                 case 'D': { // Verde 50%
-                    uint32_t color = matrix_grb(0, 0, 0.5); // Verde em RGB
-                    for (int i = 0; i < NUM_LEDS; i++) {
-                        pio_sm_put_blocking(pio, sm, color);
-                    }
-                } break;
+                    control_all_leds(0, 0, 0.5); // Verde em GRB
+                    break;
+                }
 
                 case '#': { // Branco 20%
-                    uint32_t color = matrix_grb(0.2, 0.2, 0.2); // Branco em RGB
-                    for (int i = 0; i < NUM_LEDS; i++) {
-                        pio_sm_put_blocking(pio, sm, color);
-                    }
-                } break;
-
+                    control_all_leds(0.2, 0.2, 0.2); // Branco em GRB
+                    break;
+                }
+            
                 case '*': {
                     printf("Saindo do modo exec e habilitando modo de gravacao...\n");
                     reset_usb_boot(0, 0);
@@ -500,7 +476,10 @@ int main() {
                 }
 
                 default: {
-                    clear_all_leds();
+                    control_all_leds(0, 0, 0);
+                    control_buzzer(1);
+                    sleep_ms(200);
+                    control_buzzer(0);
                     break;
                 }
             }
