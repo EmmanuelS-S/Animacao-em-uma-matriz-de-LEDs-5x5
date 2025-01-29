@@ -52,7 +52,7 @@ O código foi testado e validado com sucesso no simulador **Wokwi**, demonstrand
 
 ### 🎥 Solução Implementada
 
-[🔗 Link para o vídeo do ensaio (duração máx. de 3 minutos)]()
+[🔗 Link para o vídeo do ensaio (duração máx. de 3 minutos)](https://drive.google.com/file/d/1zuRzge1zHnsWBxX6Bay-etaF1Xp1IqG-/view?usp=sharing)
 
 ## 👨‍💻 Contribuidores
 - Adriano Trajano
