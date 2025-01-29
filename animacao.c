@@ -55,7 +55,7 @@ char read_keypad(void) {
     for (int r = 0; r < ROWS; r++) {
         // Ativa a linha
         gpio_put(ROW_PIN[r], true);
-        sleep_us(200);
+        sleep_us(1000);
 
         // Verifica colunas
         for (int c = 0; c < COL; c++) {
@@ -118,11 +118,11 @@ static void run_animation(const uint32_t frames[][NUM_LEDS], int num_frames, int
 
 // Animação 0: "Deck Suits" com 5 frames
 static void animation_deck_suits(void) {
-    #define OUROS   0x00FF00    // Vermelho (100%)
-    #define COPAS   0xFF0000    // Vermelho (~80%)
-    #define ESPADAS 0xFFFFFF    // Vermelho (~80%)
-    #define PAUS    0x0000FF    // Azul
-    #define JOKER   0xFFFF00   // Branco (~20%)
+    #define OUROS   0x00FF00    
+    #define COPAS   0xFF0000   
+    #define ESPADAS 0xFFFFFF    
+    #define PAUS    0x0000FF    
+    #define JOKER   0xFFFF00   
 
     static const uint32_t frames[5][NUM_LEDS] = {
         // Frame 1 (Ouros)
@@ -172,7 +172,7 @@ static void animation_deck_suits(void) {
 
 // Animação 1: Snake (7 frames)
 static void animation_snake(void) {
-    #define SNAKE_COLOR 0x800000    // Verde (~50%)
+    #define SNAKE_COLOR 0x7F0000 // Verde (~50%) 
     static const uint32_t frames[7][NUM_LEDS] = {
         {
             SNAKE_COLOR,0,SNAKE_COLOR,0,0,
@@ -276,10 +276,8 @@ static void animation_heart(void) {
             }
         }
     }
-
     run_animation(frames, 5, 500); // 500ms entre os frames
 }
-
 
 // Animação 4: "Lighting" com 5 frames
 static void animation_lighting(void) {
@@ -417,26 +415,31 @@ int main() {
                     control_all_leds(0, 0, 0);
                     break;
                 }
+                
                 case '2' : {
                     animation_fade();
                     control_all_leds(0, 0, 0);
                     break;
                 }
+                
                 case '3' : {
                     animation_heart();
                     control_all_leds(0, 0, 0);
                     break;
                 }
+                
                 case '4' : {
                     animation_lighting();
                     control_all_leds(0, 0, 0);
                     break;
                 }
+                
                 case '5' : {
                     animation_sol_se_pondo();
                     control_all_leds(0, 0, 0);
                     break;
                 }
+                
                 case 'A': { // Desliga todos os LEDs
                     control_all_leds(0, 0, 0);
 
@@ -445,6 +448,7 @@ int main() {
                     control_buzzer(0);
                     break;
                 }
+                
                 case 'B': { // Azul 100%
                     control_all_leds(1.0, 0, 0); // Azul em GRB
                     break;
