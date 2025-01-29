@@ -100,13 +100,6 @@ static void control_all_leds(double b, double r, double g) {
     }
 }
 
-/*static uint32_t set_led_color(double b, double r, double g) {
-    uint32_t color = matrix_rgb(b, r, g);
-    pio_sm_put_blocking(pio, sm, color);
-
-    return color;
-}*/
-
 // Envia UM quadro (25 pixels)
 static void draw_frame(const uint32_t frame[NUM_LEDS]) {
     for (int i = 0; i < NUM_LEDS; i++) {
